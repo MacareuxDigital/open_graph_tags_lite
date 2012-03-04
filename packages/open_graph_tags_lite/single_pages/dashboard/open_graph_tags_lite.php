@@ -31,7 +31,7 @@
 			$('#thumbnail-form').get(0).submit();
 		}
 		</script>
-	<? }else{ ?>
+	<?php }else{ ?>
 		<div class="clearfix">
 			<label for="thumbnail_upload"><?php echo t('Upload File'); ?></label>
 			<div class="input">
@@ -49,7 +49,7 @@
 			</div>
 		</div>
 
-	<? } ?>
+	<?php } ?>
 	</fieldset>
 
 	</form>
