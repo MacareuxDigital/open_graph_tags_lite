@@ -11,8 +11,12 @@ class OpenGraphTagsLite {
 		$thumbnailID = $co->get('OG_THUMBNAIL_ID');
 		
 		$page = Page::getCurrentPage();
+		$navigation = Loader::helper("navigation");
 		$pageTitle = $page->getCollectionName();
+		$pageDescription = $page->getCollectionDescription();
 		$pageMetaTitle = $page->getCollectionAttributeValue('meta_title');
+		$pageMetaDescription = $page->getCollectionAttributeValue('meta_description');
+		if ( $pageMetaDescription ) $pageDescription = $pageMetaDescription;
 		if ( $pageMetaTitle ) $pageTitle = $pageMetaTitle;
 		$pageOgTitle =  $page->getCollectionAttributeValue('og_title');
 		if ( $pageOgTitle ) $pageTitle = $pageOgTitle;
@@ -20,12 +24,13 @@ class OpenGraphTagsLite {
 		if ( !$pageOgType ) $pageOgType = 'article';
 
 		Controller::addHeaderItem('<meta property="og:title" content="' . htmlspecialchars($pageTitle, ENT_COMPAT, APP_CHARSET) . '" />');
+		Controller::addHeaderItem('<meta property="og:description" content="' . htmlspecialchars($pageDescription, ENT_COMPAT, APP_CHARSET) . '" />');
 		Controller::addHeaderItem('<meta property="og:type" content="' .  $pageOgType . '" />');
-		Controller::addHeaderItem('<meta property="og:url" content="' . BASE_URL . DIR_REL . $page->getCollectionPath() . '" />');
+		Controller::addHeaderItem('<meta property="og:url" content="' . BASE_URL . $navigation->getLinkToCollection($page) . '" />');
 		if ( $page->getAttribute('og_image') ) {
-			Controller::addHeaderItem('<meta property="og:image" content="' .  BASE_URL . DIR_REL . $page->getAttribute('og_image')->getVersion()->getRelativePath() . '" />');
+			Controller::addHeaderItem('<meta property="og:image" content="' .  BASE_URL . $page->getAttribute('og_image')->getVersion()->getRelativePath() . '" />');
 		} else if ( $page->getAttribute('page_thumbnail') ) {
-			Controller::addHeaderItem('<meta property="og:image" content="' .  BASE_URL . DIR_REL . $page->getAttribute('page_thumbnail')->getVersion()->getRelativePath() . '" />');
+			Controller::addHeaderItem('<meta property="og:image" content="' .  BASE_URL . $page->getAttribute('page_thumbnail')->getVersion()->getRelativePath() . '" />');
 		} else if ( $thumbnailID ) {
 			$f = File::getByID($thumbnailID);
 			Controller::addHeaderItem('<meta property="og:image" content="' .  BASE_URL . $f->getRelativePath() . '" />');
