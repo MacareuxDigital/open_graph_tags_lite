@@ -5,7 +5,7 @@ class OpenGraphTagsLitePackage extends Package {
 
 	protected $pkgHandle = 'open_graph_tags_lite';
 	protected $appVersionRequired = '5.5.0';
-	protected $pkgVersion = '1.1';
+	protected $pkgVersion = '1.2';
 	
 	public function getPackageDescription() {
 		return t("Auto insert Open Graph Tags (OGP) into HEAD tag");
