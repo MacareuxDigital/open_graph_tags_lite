@@ -1,71 +1,32 @@
 <?php defined('C5_EXECUTE') or die("Access Denied."); ?>
 <?php echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Open Graph Tags Setting'), t('For optimize to Facebook, please input these settings.'), 'span12 offset2', false); ?>
 <div class="ccm-pane-body">
-	<form method="post" id="thumbnail-form" action="<?php echo $this->action('update_thumbnail'); ?>" enctype="multipart/form-data" >
+	<form method="post" id="site-form" action="<?php echo $this->action('save_settings'); ?>"  enctype="multipart/form-data">
 
-	<?php echo $this->controller->token->output('update_thumbnail'); ?>
-	<input id="remove-existing-thumbnail" name="remove_thumbnail" type="hidden" value="0" />
+	<?php echo $this->controller->token->output('save_settings'); ?>
 	<fieldset>
 		<legend><?php echo t('Default Thumbnail'); ?></legend>
-
-	<?php
-	if($thumbnailID){
-		$f = File::getByID($thumbnailID);
-		?>
 		<div class="clearfix">
-		<label><?php echo t('Selected Thumbnail'); ?></label>
-		<div class="input">
-			<img src="<?php echo $f->getRelativePath(); ?>" />
-		</div>
-		</div>
-		<div class="clearfix">
-		<label></label>
-		<div class="input">
-			<a href="javascript:void(0)" class="btn danger" onclick="removeThumbnail()"><?php echo t('Remove'); ?></a>
-		</div>
-		</div>
-		
-		<script>
-		function removeThumbnail(){
-			document.getElementById('remove-existing-thumbnail').value=1;
-			$('#thumbnail-form').get(0).submit();
-		}
-		</script>
-	<?php }else{ ?>
-		<div class="clearfix">
-			<label for="thumbnail_upload"><?php echo t('Upload File'); ?></label>
+			<label for="thumbnail_upload"><?php echo t('og:image'); ?></label>
 			<div class="input">
-				<input id="thumbnail_upload" type="file" class="input-file" name="thumbnail_file"/>
-				<div><?php echo t('Images must be at least 50 pixels by 50 pixels. Square images work best, but you are allowed to use images up to three times as wide as they are tall.'); ?></div>
+				<?php $al = Loader::helper('concrete/asset_library'); ?>
+				<?php echo $al->image('og-thumbnail-id', 'og_thumbnail_id', 'Select Thumbnail', $imageObject); ?>
+				<span class="help-block">
+					<?php echo t('Image must be at least 50 pixels by 50 pixels. Square image works best, but you are allowed to use image up to three times as wide as they are tall.'); ?>
+				</span>
 			</div>
 		</div>
-
-		<div class="clearfix">
-			<label></label>
-			<div class="input">
-				<?php
-				print $interface->submit(t('Upload'), 'thumbnail-form', 'left');
-				?>
-			</div>
-		</div>
-
-	<?php } ?>
 	</fieldset>
-
-	</form>
-	
-	<form method="post" id="site-form" action="<?php echo $this->action('save_settings'); ?>">
-	<?php echo $this->controller->token->output('save_settings'); ?>
 	<fieldset>
 		<legend>Facebook Setting</legend>
 		<div class="clearfix">
-			<?php echo $form->label('fb_admin', t('Fb Admin ID')); ?>
+			<?php echo $form->label('fb_admin', t('fb:admins')); ?>
 			<div class="input">
 			<?php echo $form->text('fb_admin', $fb_admin, array('class' => 'span8')); ?>
 			</div>
 		</div>
 		<div class="clearfix">
-			<?php echo $form->label('fb_app_id', t('Fb App ID')); ?>
+			<?php echo $form->label('fb_app_id', t('fb:app_id')); ?>
 			<div class="input">
 			<?php echo $form->text('fb_app_id', $fb_app_id, array('class' => 'span8')); ?>
 			</div>
