@@ -21,7 +21,13 @@ class OpenGraphTagsLite {
 		$pageOgTitle =  $page->getCollectionAttributeValue('og_title');
 		if ( $pageOgTitle ) $pageTitle = $pageOgTitle;
 		$pageOgType = $page->getCollectionAttributeValue('og_type');
-		if ( !$pageOgType ) $pageOgType = 'article';
+		if ( !$pageOgType ) {
+			if ( $page->getCollectionID() == HOME_CID ){
+				$pageOgType = 'website';
+			} else {
+				$pageOgType = 'article';
+			}
+		}
 
 		Controller::addHeaderItem('<meta property="og:title" content="' . htmlspecialchars($pageTitle, ENT_COMPAT, APP_CHARSET) . '" />');
 		Controller::addHeaderItem('<meta property="og:description" content="' . htmlspecialchars($pageDescription, ENT_COMPAT, APP_CHARSET) . '" />');
@@ -35,7 +41,8 @@ class OpenGraphTagsLite {
 			$f = File::getByID($thumbnailID);
 			Controller::addHeaderItem('<meta property="og:image" content="' .  BASE_URL . $f->getRelativePath() . '" />');
 		}
-		Controller::addHeaderItem('<meta property="og:site_name" content="' .  SITE . '" />');
+		if ( $page->getCollectionID() != HOME_CID )
+			Controller::addHeaderItem('<meta property="og:site_name" content="' .  SITE . '" />');
 		if ( $fb_admin ) 
 			Controller::addHeaderItem('<meta property="fb:admins" content="' . $fb_admin . '" />');
 		if ( $fb_app_id ) 
