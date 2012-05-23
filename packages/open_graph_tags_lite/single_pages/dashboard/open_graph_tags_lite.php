@@ -12,13 +12,13 @@
 				<?php $al = Loader::helper('concrete/asset_library'); ?>
 				<?php echo $al->image('og-thumbnail-id', 'og_thumbnail_id', 'Select Thumbnail', $imageObject); ?>
 				<span class="help-block">
-					<?php echo t('Image must be at least 50 pixels by 50 pixels. Square image works best, but you are allowed to use image up to three times as wide as they are tall.'); ?>
+					<?php echo t('Image referenced by og:image must be at least 200px in both dimensions.'); ?>
 				</span>
 			</div>
 		</div>
 	</fieldset>
 	<fieldset>
-		<legend>Facebook Setting</legend>
+		<legend><?php echo t('Facebook Setting'); ?></legend>
 		<div class="clearfix">
 			<?php echo $form->label('fb_admin', t('fb:admins')); ?>
 			<div class="input">
