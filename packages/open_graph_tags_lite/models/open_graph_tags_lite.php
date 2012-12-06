@@ -9,6 +9,7 @@ class OpenGraphTagsLite {
 		$fb_admin = $co->get('FB_ADMIN_ID');
 		$fb_app_id = $co->get('FB_APP_ID');
 		$thumbnailID = $co->get('OG_THUMBNAIL_ID');
+		$twitter_site = $co->get('TWITTER_SITE');
 		
 		$page = Page::getCurrentPage();
 		$navigation = Loader::helper("navigation");
@@ -27,6 +28,10 @@ class OpenGraphTagsLite {
 			} else {
 				$pageOgType = 'article';
 			}
+		}
+		$pageTwitterCard = $page->getCollectionAttributeValue('twitter_card');
+		if ( !$pageTwitterCard ) {
+			$pageTwitterCard = 'summary';
 		}
 
 		Controller::addHeaderItem('<meta property="og:title" content="' . htmlspecialchars($pageTitle, ENT_COMPAT, APP_CHARSET) . '" />');
@@ -47,6 +52,10 @@ class OpenGraphTagsLite {
 			Controller::addHeaderItem('<meta property="fb:admins" content="' . $fb_admin . '" />');
 		if ( $fb_app_id ) 
 			Controller::addHeaderItem('<meta property="fb:app_id" content="' . $fb_app_id . '" />');
+		if ( $twitter_site ) {
+			Controller::addHeaderItem('<meta property="twitter:card" content="' . $pageTwitterCard . '" />');
+			Controller::addHeaderItem('<meta property="twitter:site" content="@' . $twitter_site . '" />');
+		}
 	}
 	
 }
