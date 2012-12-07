@@ -53,8 +53,8 @@ class OpenGraphTagsLite {
 		if ( $fb_app_id ) 
 			Controller::addHeaderItem('<meta property="fb:app_id" content="' . $fb_app_id . '" />');
 		if ( $twitter_site ) {
-			Controller::addHeaderItem('<meta property="twitter:card" content="' . $pageTwitterCard . '" />');
-			Controller::addHeaderItem('<meta property="twitter:site" content="@' . $twitter_site . '" />');
+			Controller::addHeaderItem('<meta name="twitter:card" content="' . $pageTwitterCard . '" />');
+			Controller::addHeaderItem('<meta name="twitter:site" content="@' . $twitter_site . '" />');
 		}
 	}
 	
