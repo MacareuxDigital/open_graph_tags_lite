@@ -56,7 +56,19 @@ class OpenGraphTagsLiteHelper {
 		}
 		
 		if ($og_image instanceof File && !$og_image->isError()) {
-			$og_image_path = $og_image->getRelativePath(true);
+			$size = $og_image->getFullSize();
+			if ($size > 5000000) {
+				$thumb = Loader::helper('image')->getThumbnail($og_image,1200,630,true);
+				$og_image_width = $thumb->width;
+				$og_image_height = $thumb->height;
+				$og_image_url = BASE_URL . $thumb->src;
+			} else {
+				$abspath = $og_image->getPath();
+				$dimensions = getimagesize($abspath);
+				$og_image_width = $dimensions[0];
+				$og_image_height = $dimensions[1];
+				$og_image_url = $og_image->getRelativePath(true);
+			}
 		}
 
 		$v = View::getInstance();
@@ -64,8 +76,10 @@ class OpenGraphTagsLiteHelper {
 		$v->addHeaderItem('<meta property="og:description" content="' . $th->entities($pageDescription) . '" />');
 		$v->addHeaderItem('<meta property="og:type" content="' .  $th->entities($pageOgType) . '" />');
 		$v->addHeaderItem('<meta property="og:url" content="' . $navigation->getLinkToCollection($page,true) . '" />');
-		if ( isset($og_image_path) ) {
-			$v->addHeaderItem('<meta property="og:image" content="' .  $og_image_path . '" />');
+		if ( isset($og_image_url) && isset($og_image_width) && isset($og_image_height) ) {
+			$v->addHeaderItem('<meta property="og:image" content="' .  $og_image_url . '" />');
+			$v->addHeaderItem('<meta property="og:image:width" content="' .  $og_image_width . '" />');
+			$v->addHeaderItem('<meta property="og:image:height" content="' .  $og_image_height . '" />');
 		}
 		if ( $page->getCollectionID() != HOME_CID ) {
 			$v->addHeaderItem('<meta property="og:site_name" content="' .  $th->entities(SITE) . '" />');
