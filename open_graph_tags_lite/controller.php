@@ -48,7 +48,7 @@ class OpenGraphTagsLitePackage extends Package {
 	}
 	
 	public function on_start() {
-		Events::extend('on_start', 'OpenGraphTagsLite', 'insertTags', './packages/open_graph_tags_lite/models/open_graph_tags_lite.php');
+		Events::extend('on_start', 'OpenGraphTagsLiteHelper', 'insertTags', 'packages/open_graph_tags_lite/helpers/open_graph_tags_lite.php');
 	}
 	
 	private function _setupDashboardIcons($sp,$icon) {
