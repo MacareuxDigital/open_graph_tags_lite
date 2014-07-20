@@ -1,9 +1,12 @@
 <?php
 defined('C5_EXECUTE') or die("Access Denied.");
 
-class OpenGraphTagsLite {
+class OpenGraphTagsLiteHelper {
 	
 	public function insertTags( $view ) {
+		$navigation = Loader::helper("navigation");
+		$th = Loader::helper('text');
+		
 		$co = new Config();
 		$co->setPackageObject(Package::getByHandle('open_graph_tags_lite'));
 		$fb_admin = $co->get('FB_ADMIN_ID');
@@ -12,15 +15,24 @@ class OpenGraphTagsLite {
 		$twitter_site = $co->get('TWITTER_SITE');
 		
 		$page = Page::getCurrentPage();
-		$navigation = Loader::helper("navigation");
-		$pageTitle = $page->getCollectionName();
-		$pageDescription = $page->getCollectionDescription();
-		$pageMetaTitle = $page->getCollectionAttributeValue('meta_title');
-		$pageMetaDescription = $page->getCollectionAttributeValue('meta_description');
-		if ( $pageMetaDescription ) $pageDescription = $pageMetaDescription;
-		if ( $pageMetaTitle ) $pageTitle = $pageMetaTitle;
-		$pageOgTitle =  $page->getCollectionAttributeValue('og_title');
-		if ( $pageOgTitle ) $pageTitle = $pageOgTitle;
+		
+		$pageTitle = $page->getCollectionAttributeValue('og_title');
+		if (!$pageTitle) {
+			$pageTitle = $page->getCollectionAttributeValue('meta_title');
+			if (!$pageTitle) {
+				$pageTitle = $page->getCollectionName();
+				if($page->isSystemPage()) {
+					$pageTitle = t($pageTitle);
+				}
+			}
+		}
+		
+		$pageDescription = $page->getCollectionAttributeValue('meta_description');
+		if (!$pageDescription) {
+			$pageDescription = $page->getCollectionDescription();
+		}
+		$pageDescription = $th->shortenTextWord($pageDescription, 200, '');
+		
 		$pageOgType = $page->getCollectionAttributeValue('og_type');
 		if ( !$pageOgType ) {
 			if ( $page->getCollectionID() == HOME_CID ){
@@ -29,32 +41,44 @@ class OpenGraphTagsLite {
 				$pageOgType = 'article';
 			}
 		}
+		
 		$pageTwitterCard = $page->getCollectionAttributeValue('twitter_card');
 		if ( !$pageTwitterCard ) {
 			$pageTwitterCard = 'summary';
 		}
-
-		Controller::addHeaderItem('<meta property="og:title" content="' . htmlspecialchars($pageTitle, ENT_COMPAT, APP_CHARSET) . '" />');
-		Controller::addHeaderItem('<meta property="og:description" content="' . htmlspecialchars($pageDescription, ENT_COMPAT, APP_CHARSET) . '" />');
-		Controller::addHeaderItem('<meta property="og:type" content="' .  $pageOgType . '" />');
-		Controller::addHeaderItem('<meta property="og:url" content="' . BASE_URL . $navigation->getLinkToCollection($page) . '" />');
-		if ( $page->getAttribute('og_image') ) {
-			Controller::addHeaderItem('<meta property="og:image" content="' .  BASE_URL . $page->getAttribute('og_image')->getVersion()->getRelativePath() . '" />');
-		} else if ( $page->getAttribute('page_thumbnail') ) {
-			Controller::addHeaderItem('<meta property="og:image" content="' .  BASE_URL . $page->getAttribute('page_thumbnail')->getVersion()->getRelativePath() . '" />');
-		} else if ( $thumbnailID ) {
-			$f = File::getByID($thumbnailID);
-			Controller::addHeaderItem('<meta property="og:image" content="' .  BASE_URL . $f->getRelativePath() . '" />');
+		
+		$og_image = $page->getAttribute('og_image');
+		if (!$og_image instanceof File) {
+			$og_image = $page->getAttribute('page_thumbnail');
+			if (!$og_image instanceof File && !empty($thumbnailID)) {
+				$og_image = File::getByID($thumbnailID);
+			}
 		}
-		if ( $page->getCollectionID() != HOME_CID )
-			Controller::addHeaderItem('<meta property="og:site_name" content="' .  SITE . '" />');
-		if ( $fb_admin ) 
-			Controller::addHeaderItem('<meta property="fb:admins" content="' . $fb_admin . '" />');
-		if ( $fb_app_id ) 
-			Controller::addHeaderItem('<meta property="fb:app_id" content="' . $fb_app_id . '" />');
+		
+		if ($og_image instanceof File && !$og_image->isError()) {
+			$og_image_path = $og_image->getRelativePath(true);
+		}
+
+		$v = View::getInstance();
+		$v->addHeaderItem('<meta property="og:title" content="' . $th->entities($pageTitle) . '" />');
+		$v->addHeaderItem('<meta property="og:description" content="' . $th->entities($pageDescription) . '" />');
+		$v->addHeaderItem('<meta property="og:type" content="' .  $th->entities($pageOgType) . '" />');
+		$v->addHeaderItem('<meta property="og:url" content="' . $navigation->getLinkToCollection($page,true) . '" />');
+		if ( isset($og_image_path) ) {
+			$v->addHeaderItem('<meta property="og:image" content="' .  $og_image_path . '" />');
+		}
+		if ( $page->getCollectionID() != HOME_CID ) {
+			$v->addHeaderItem('<meta property="og:site_name" content="' .  $th->entities(SITE) . '" />');
+		}
+		if ( $fb_admin ) {
+			$v->addHeaderItem('<meta property="fb:admins" content="' . $th->entities($fb_admin) . '" />');
+		}
+		if ( $fb_app_id ) {
+			$v->addHeaderItem('<meta property="fb:app_id" content="' . $th->entities($fb_app_id) . '" />');
+		}
 		if ( $twitter_site ) {
-			Controller::addHeaderItem('<meta name="twitter:card" content="' . $pageTwitterCard . '" />');
-			Controller::addHeaderItem('<meta name="twitter:site" content="@' . $twitter_site . '" />');
+			$v->addHeaderItem('<meta name="twitter:card" content="' . $th->entities($pageTwitterCard) . '" />');
+			$v->addHeaderItem('<meta name="twitter:site" content="@' . $th->entities($twitter_site) . '" />');
 		}
 	}
 	
