@@ -29,6 +29,13 @@ class OpenGraphTagsLitePackage extends Package {
 			$sp->update(array('cName'=>t('Open Graph Tags Settings'), 'cDescription'=>''));
 			$this->_setupDashboardIcons($sp, 'icon-thumbs-up');
 		}
+		
+		//Add og:image attribute
+		$cak = CollectionAttributeKey::getByHandle('og_image');
+		if (!is_object($cak)) {
+			$at = AttributeType::getByHandle('image_file');
+			CollectionAttributeKey::add($at, array('akHandle' => 'og_image', 'akName' => t('og:image')));
+		}
 	}
 	
 	public function upgrade(){
@@ -42,6 +49,13 @@ class OpenGraphTagsLitePackage extends Package {
 				$sp->update(array('cName'=>t('Open Graph Tags Settings'), 'cDescription'=>''));
 				$this->_setupDashboardIcons($sp, 'icon-thumbs-up');
 			}
+		}
+		
+		//Add og:image attribute
+		$cak = CollectionAttributeKey::getByHandle('og_image');
+		if (!is_object($cak)) {
+			$at = AttributeType::getByHandle('image_file');
+			CollectionAttributeKey::add($at, array('akHandle' => 'og_image', 'akName' => t('og:image')));
 		}
 		
 		parent::upgrade();
