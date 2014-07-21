@@ -98,6 +98,17 @@ class OpenGraphTagsLiteHelper {
 			$v->addHeaderItem('<meta name="twitter:card" content="' . $th->entities($pageTwitterCard) . '" />');
 			$v->addHeaderItem('<meta name="twitter:site" content="@' . $th->entities($twitter_site) . '" />');
 		}
+		
+		$localization = Localization::getInstance();
+		$locale = $localization->getLocale();
+		$v->addHeaderItem('<meta name="og:locale" content="' . $th->entities($locale) . '" />');
+		
+		$cv = $page->getVersionObject();
+		if (is_object($cv)) {
+			$lastModified = $cv->getVersionDateCreated();
+			$lastModified = date(DATE_ATOM, strtotime($lastModified));
+			$v->addHeaderItem('<meta name="og:updated_time" content="' . $th->entities($lastModified) . '" />');
+		}
 	}
 	
 }
