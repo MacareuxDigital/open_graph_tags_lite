@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Open Graph Tags Lite\n"
+"Project-Id-Version: Open Graph Tags Lite 1.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-12-07 02:12+0900\n"
-"PO-Revision-Date: 2012-12-07 02:32+0900\n"
+"POT-Creation-Date: 2014-07-22 01:15+0900\n"
+"PO-Revision-Date: 2014-07-22 01:16+0900\n"
 "Last-Translator: Takuro Hishikawa <hishikawa@concrete5.co.jp>\n"
 "Language-Team: \n"
 "Language: ja_JP\n"
@@ -12,7 +12,9 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-KeywordsList: t\n"
 "X-Poedit-Basepath: .\n"
-"X-Generator: Poedit 1.5.4\n"
+"X-Generator: Poedit 1.6.5\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-SearchPath-0: ../../..\n"
 
 #: ../../../controller.php:2
@@ -27,10 +29,14 @@ msgstr "HEADタグに自動的に Open Graph Tags（OGP）を挿入"
 msgid "Open Graph Tags Lite"
 msgstr ""
 
-#: ../../../controller.php:29 ../../../controller.php:42
+#: ../../../controller.php:29 ../../../controller.php:49
 #: ../../../single_pages/dashboard/open_graph_tags_lite/settings.php:2
 msgid "Open Graph Tags Settings"
 msgstr "オープングラフタグ設定"
+
+#: ../../../controller.php:37 ../../../controller.php:58
+msgid "og:image"
+msgstr ""
 
 #: ../../../controllers/dashboard/open_graph_tags_lite/settings.php:27
 msgid "Settings saved."
@@ -44,36 +50,30 @@ msgstr "Facebookに最適化させるには、次の設定を入力してくだ�
 msgid "Default Thumbnail"
 msgstr "デフォルトサムネイル画像"
 
-#: ../../../single_pages/dashboard/open_graph_tags_lite/settings.php:11
-msgid "og:image"
-msgstr ""
-
 #: ../../../single_pages/dashboard/open_graph_tags_lite/settings.php:16
-msgid "Image referenced by og:image must be at least 200px in both dimensions."
-msgstr "og:imageから参照される画像は縦横ともに200px以上である必要があります。"
+msgid "Image referenced by og:image must be at least 600x315 pixels."
+msgstr "og:imageから参照される画像は600x315px以上である必要があります。"
 
 #: ../../../single_pages/dashboard/open_graph_tags_lite/settings.php:22
 msgid "Facebook Setting"
 msgstr "Facebook設定"
 
-#: ../../../single_pages/dashboard/open_graph_tags_lite/settings.php:24
-msgid "fb:admins"
-msgstr ""
-
-#: ../../../single_pages/dashboard/open_graph_tags_lite/settings.php:30
-msgid "fb:app_id"
-msgstr ""
-
-#: ../../../single_pages/dashboard/open_graph_tags_lite/settings.php:38
-#: ../../../single_pages/dashboard/open_graph_tags_lite/settings.php:66
+#: ../../../single_pages/dashboard/open_graph_tags_lite/settings.php:37
+#: ../../../single_pages/dashboard/open_graph_tags_lite/settings.php:78
 msgid "Page Attribute Reference"
 msgstr "ページ属性リファレンス"
 
-#: ../../../single_pages/dashboard/open_graph_tags_lite/settings.php:40
-msgid "og_title"
+#: ../../../single_pages/dashboard/open_graph_tags_lite/settings.php:41
+#: ../../../single_pages/dashboard/open_graph_tags_lite/settings.php:82
+msgid "Handle"
 msgstr ""
 
-#: ../../../single_pages/dashboard/open_graph_tags_lite/settings.php:41
+#: ../../../single_pages/dashboard/open_graph_tags_lite/settings.php:42
+#: ../../../single_pages/dashboard/open_graph_tags_lite/settings.php:83
+msgid "Description"
+msgstr ""
+
+#: ../../../single_pages/dashboard/open_graph_tags_lite/settings.php:48
 msgid ""
 "The title of the entity. If this value is empty, \"meta_title\" attribute or "
 "page name used instead."
@@ -81,21 +81,13 @@ msgstr ""
 "エンティティのタイトル。この値が空のとき、「meta_title」属性か、ページ名が代"
 "わりに使われます。"
 
-#: ../../../single_pages/dashboard/open_graph_tags_lite/settings.php:42
-msgid "og_type"
-msgstr ""
-
-#: ../../../single_pages/dashboard/open_graph_tags_lite/settings.php:43
+#: ../../../single_pages/dashboard/open_graph_tags_lite/settings.php:52
 msgid ""
 "The type of the entity. If this value is empty, \"article\" used instead."
 msgstr ""
 "エンティティのタイプ。この値が空のとき、「article」が代わりに使われます。"
 
-#: ../../../single_pages/dashboard/open_graph_tags_lite/settings.php:44
-msgid "og_image"
-msgstr ""
-
-#: ../../../single_pages/dashboard/open_graph_tags_lite/settings.php:45
+#: ../../../single_pages/dashboard/open_graph_tags_lite/settings.php:56
 msgid ""
 "An image that represents the entity. If this value is empty, \"page_thumbnail"
 "\" attribute used instead."
@@ -103,23 +95,19 @@ msgstr ""
 "エンティティを表現する画像。この値が空のとき、「page_thumbnail」属性が代わり"
 "に使われます。"
 
-#: ../../../single_pages/dashboard/open_graph_tags_lite/settings.php:51
+#: ../../../single_pages/dashboard/open_graph_tags_lite/settings.php:64
 msgid "Twitter Cards Setting"
 msgstr "Twitter Cards 設定"
 
-#: ../../../single_pages/dashboard/open_graph_tags_lite/settings.php:53
+#: ../../../single_pages/dashboard/open_graph_tags_lite/settings.php:66
 msgid "Twitter Username"
 msgstr "Twitterユーザー名"
 
-#: ../../../single_pages/dashboard/open_graph_tags_lite/settings.php:59
+#: ../../../single_pages/dashboard/open_graph_tags_lite/settings.php:72
 msgid "Twitter handle of the person to contact"
 msgstr "Twitterの連絡先ハンドルネーム"
 
-#: ../../../single_pages/dashboard/open_graph_tags_lite/settings.php:68
-msgid "twitter_card"
-msgstr ""
-
-#: ../../../single_pages/dashboard/open_graph_tags_lite/settings.php:69
+#: ../../../single_pages/dashboard/open_graph_tags_lite/settings.php:89
 msgid ""
 "The card type, which will be one of \"summary\", \"photo\", or \"player\". "
 "If this value is empty, \"summary\" used instead."
@@ -127,6 +115,6 @@ msgstr ""
 "\"summary\", \"photo\", \"player\"のいずれかのカードのタイプ。この値が空のと"
 "き、「summary」が代わりに使われます。"
 
-#: ../../../single_pages/dashboard/open_graph_tags_lite/settings.php:76
+#: ../../../single_pages/dashboard/open_graph_tags_lite/settings.php:98
 msgid "Save"
 msgstr ""

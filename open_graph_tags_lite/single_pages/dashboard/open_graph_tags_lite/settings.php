@@ -8,7 +8,7 @@
 	<fieldset>
 		<legend><?php echo t('Default Thumbnail'); ?></legend>
 		<div class="control-group">
-			<?php echo $form->label('og_thumbnail_id', t('og:image'))?>
+			<?php echo $form->label('og_thumbnail_id', 'og:image')?>
 			<div class="controls">
 				<?php $al = Loader::helper('concrete/asset_library'); ?>
 				<?php echo $al->image('og-thumbnail-id', 'og_thumbnail_id', 'Select Default Thumbnail', $imageObject); ?>
@@ -21,13 +21,13 @@
 	<fieldset>
 		<legend><?php echo t('Facebook Setting'); ?></legend>
 		<div class="control-group">
-			<?php echo $form->label('fb_admin', t('fb:admins')); ?>
+			<?php echo $form->label('fb_admin', 'fb:admins'); ?>
 			<div class="controls">
 			<?php echo $form->text('fb_admin', $fb_admin, array('class' => 'input-xlarge')); ?>
 			</div>
 		</div>
 		<div class="control-group">
-			<?php echo $form->label('fb_app_id', t('fb:app_id')); ?>
+			<?php echo $form->label('fb_app_id', 'fb:app_id'); ?>
 			<div class="controls">
 			<?php echo $form->text('fb_app_id', $fb_app_id, array('class' => 'input-xlarge')); ?>
 			</div>
@@ -44,15 +44,15 @@
 					</thead>
 					<tbody>
 						<tr>
-							<th><?php echo t('og_title'); ?></th>
+							<th><?php echo 'og_title'; ?></th>
 							<td><?php echo t('The title of the entity. If this value is empty, "meta_title" attribute or page name used instead.'); ?></td>
 						</tr>
 						<tr>
-							<th><?php echo t('og_type'); ?></th>
+							<th><?php echo 'og_type'; ?></th>
 							<td><?php echo t('The type of the entity. If this value is empty, "article" used instead.'); ?></td>
 						</tr>
 						<tr>
-							<th><?php echo t('og_image'); ?></th>
+							<th><?php echo 'og_image'; ?></th>
 							<td><?php echo t('An image that represents the entity. If this value is empty, "page_thumbnail" attribute used instead.'); ?></td>
 						</tr>
 					</tbody>
@@ -85,7 +85,7 @@
 					</thead>
 					<tbody>
 						<tr>
-							<th><?php echo t('twitter_card'); ?></th>
+							<th><?php echo 'twitter_card'; ?></th>
 							<td><?php echo t('The card type, which will be one of "summary", "photo", or "player". If this value is empty, "summary" used instead.'); ?></td>
 						</tr>
 					</tbody>
