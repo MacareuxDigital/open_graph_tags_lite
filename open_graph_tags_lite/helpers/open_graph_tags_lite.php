@@ -7,14 +7,18 @@ class OpenGraphTagsLiteHelper {
 		$navigation = Loader::helper("navigation");
 		$th = Loader::helper('text');
 		
+		$page = Page::getCurrentPage();
+		
+		if (!is_object($page) || $page->getError() == COLLECTION_NOT_FOUND || $page->isAdminArea()) {
+			return;
+		}
+		
 		$co = new Config();
 		$co->setPackageObject(Package::getByHandle('open_graph_tags_lite'));
 		$fb_admin = $co->get('FB_ADMIN_ID');
 		$fb_app_id = $co->get('FB_APP_ID');
 		$thumbnailID = $co->get('OG_THUMBNAIL_ID');
 		$twitter_site = $co->get('TWITTER_SITE');
-		
-		$page = Page::getCurrentPage();
 		
 		$pageTitle = $page->getCollectionAttributeValue('og_title');
 		if (!$pageTitle) {
