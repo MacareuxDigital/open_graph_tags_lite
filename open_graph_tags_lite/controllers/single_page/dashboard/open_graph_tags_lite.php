@@ -5,8 +5,9 @@ use \Concrete\Core\Page\Controller\DashboardPageController;
 
 class OpenGraphTagsLite extends DashboardPageController {
 
-	public function view() {
-		$this->redirect('/dashboard/open_graph_tags_lite/settings');
-	}
+    public function view()
+    {
+        $this->redirect('/dashboard/open_graph_tags_lite/settings');
+    }
 
 }
