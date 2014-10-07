@@ -1,7 +1,15 @@
 <?php
-defined('C5_EXECUTE') or die("Access Denied.");
+namespace Concrete\Package\OpenGraphTagsLite\Html;
 
-class OpenGraphTagsLiteHelper {
+use Loader;
+use Page;
+use Package;
+use File;
+use View;
+use Config;
+use Localization;
+
+class OpenGraphTags {
 	
 	public function insertTags( $view ) {
 		$navigation = Loader::helper("navigation");
@@ -13,12 +21,12 @@ class OpenGraphTagsLiteHelper {
 			return;
 		}
 		
-		$co = new Config();
-		$co->setPackageObject(Package::getByHandle('open_graph_tags_lite'));
-		$fb_admin = $co->get('FB_ADMIN_ID');
-		$fb_app_id = $co->get('FB_APP_ID');
-		$thumbnailID = $co->get('OG_THUMBNAIL_ID');
-		$twitter_site = $co->get('TWITTER_SITE');
+		$pkg = Package::getByHandle('open_graph_tags_lite');
+		$pkd_id = $pkg->getPackageID();
+		$fb_admin = Config::get('concrete.open_graph_tags_lite.fb_admin_id',$pkd_id);
+		$fb_app_id = Config::get('concrete.open_graph_tags_lite.fb_app_id',$pkd_id);
+		$thumbnailID = Config::get('concrete.open_graph_tags_lite.og_thumbnail_id',$pkd_id);
+		$twitter_site = Config::get('concrete.open_graph_tags_lite.twitter_site',$pkd_id);
 		
 		$pageTitle = $page->getCollectionAttributeValue('og_title');
 		if (!$pageTitle) {
@@ -60,18 +68,17 @@ class OpenGraphTagsLiteHelper {
 		}
 		
 		if ($og_image instanceof File && !$og_image->isError()) {
-			$size = $og_image->getFullSize();
+			$fv = $og_image->getApprovedVersion();
+			$size = $fv->getFullSize();
 			if ($size > 5000000) {
 				$thumb = Loader::helper('image')->getThumbnail($og_image,1200,630,true);
 				$og_image_width = $thumb->width;
 				$og_image_height = $thumb->height;
 				$og_image_url = BASE_URL . $thumb->src;
 			} else {
-				$abspath = $og_image->getPath();
-				$dimensions = getimagesize($abspath);
-				$og_image_width = $dimensions[0];
-				$og_image_height = $dimensions[1];
-				$og_image_url = $og_image->getRelativePath(true);
+				$og_image_width = $og_image->getAttribute('width');
+				$og_image_height = $og_image->getAttribute('height');
+				$og_image_url = BASE_URL . File::getRelativePathFromID($og_image->getFileID());
 			}
 		}
 
@@ -86,7 +93,7 @@ class OpenGraphTagsLiteHelper {
 			$v->addHeaderItem('<meta property="og:image:height" content="' .  $og_image_height . '" />');
 		}
 		if ( $page->getCollectionID() != HOME_CID ) {
-			$v->addHeaderItem('<meta property="og:site_name" content="' .  $th->entities(SITE) . '" />');
+			$v->addHeaderItem('<meta property="og:site_name" content="' .  $th->entities(Config::get('concrete.site')) . '" />');
 		}
 		if ( $fb_admin ) {
 			$v->addHeaderItem('<meta property="fb:admins" content="' . $th->entities($fb_admin) . '" />');

@@ -1,11 +1,18 @@
 <?php
-defined('C5_EXECUTE') or die(_("Access Denied."));
+namespace Concrete\Package\OpenGraphTagsLite;
 
-class OpenGraphTagsLitePackage extends Package {
+use SinglePage;
+use Page;
+use CollectionAttributeKey;
+use \Concrete\Core\Attribute\Type as AttributeType;
+use Events;
+use \Concrete\Package\OpenGraphTagsLite\Html\OpenGraphTags;
+
+class Controller extends \Concrete\Core\Package\Package {
 
 	protected $pkgHandle = 'open_graph_tags_lite';
 	protected $appVersionRequired = '5.5.0';
-	protected $pkgVersion = '1.5';
+	protected $pkgVersion = '1.4';
 	
 	public function getPackageDescription() {
 		return t("Auto insert Open Graph Tags (OGP) into HEAD tag");
@@ -18,8 +25,7 @@ class OpenGraphTagsLitePackage extends Package {
 	public function install() {
 		$pkg = parent::install();
 		
-		//Install dashboard page
-		Loader::model('single_page');
+		//Add dashboard page
 		$sp = SinglePage::add('/dashboard/open_graph_tags_lite', $pkg);
 		if (is_object($sp)) {
 			$sp->update(array('cName'=>t('Open Graph Tags Lite'), 'cDescription'=>t('Auto insert Open Graph Tags (OGP) into HEAD tag')));
@@ -27,7 +33,6 @@ class OpenGraphTagsLitePackage extends Package {
 		$sp = SinglePage::add('/dashboard/open_graph_tags_lite/settings', $pkg);
 		if (is_object($sp)) {
 			$sp->update(array('cName'=>t('Open Graph Tags Settings'), 'cDescription'=>''));
-			$this->_setupDashboardIcons($sp, 'icon-thumbs-up');
 		}
 		
 		//Add og:image attribute
@@ -36,40 +41,11 @@ class OpenGraphTagsLitePackage extends Package {
 			$at = AttributeType::getByHandle('image_file');
 			CollectionAttributeKey::add($at, array('akHandle' => 'og_image', 'akName' => t('og:image')));
 		}
-	}
-	
-	public function upgrade(){
-		$pkg = Package::getByHandle($this->pkgHandle);
-		
-		//Add dashboard page
-		$sp = Page::getByPath('/dashboard/open_graph_tags_lite/settings');
-		if (!$sp || !is_object($sp) || !$sp->getCollectionID()) {
-			$sp = SinglePage::add('/dashboard/open_graph_tags_lite/settings', $pkg);
-			if (is_object($sp)) {
-				$sp->update(array('cName'=>t('Open Graph Tags Settings'), 'cDescription'=>''));
-				$this->_setupDashboardIcons($sp, 'icon-thumbs-up');
-			}
-		}
-		
-		//Add og:image attribute
-		$cak = CollectionAttributeKey::getByHandle('og_image');
-		if (!is_object($cak)) {
-			$at = AttributeType::getByHandle('image_file');
-			CollectionAttributeKey::add($at, array('akHandle' => 'og_image', 'akName' => t('og:image')));
-		}
-		
-		parent::upgrade();
 	}
 	
 	public function on_start() {
-		Events::extend('on_start', 'OpenGraphTagsLiteHelper', 'insertTags', 'packages/open_graph_tags_lite/helpers/open_graph_tags_lite.php');
-	}
-	
-	private function _setupDashboardIcons($sp,$icon) {
-		$cak = CollectionAttributeKey::getByHandle('icon_dashboard');
-		if (is_object($cak)) {
-			$sp->setAttribute('icon_dashboard', $icon);
-		}
+		$ogp = new OpenGraphTags();
+		Events::addListener('on_start', array($ogp,'insertTags'));
 	}
 
 }
