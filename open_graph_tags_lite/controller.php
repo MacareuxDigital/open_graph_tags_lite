@@ -12,7 +12,7 @@ class Controller extends \Concrete\Core\Package\Package {
 
     protected $pkgHandle = 'open_graph_tags_lite';
     protected $appVersionRequired = '5.7.0';
-    protected $pkgVersion = '2.0';
+    protected $pkgVersion = '2.0.1';
     
     public function getPackageDescription()
     {
