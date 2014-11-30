@@ -6,13 +6,13 @@ use Page;
 use CollectionAttributeKey;
 use \Concrete\Core\Attribute\Type as AttributeType;
 use Events;
-use \Concrete\Package\OpenGraphTagsLite\Html\OpenGraphTags;
+use \Concrete\Package\OpenGraphTagsLite\Src\Html\OpenGraphTags;
 
 class Controller extends \Concrete\Core\Package\Package {
 
     protected $pkgHandle = 'open_graph_tags_lite';
-    protected $appVersionRequired = '5.7.0';
-    protected $pkgVersion = '2.0.1';
+    protected $appVersionRequired = '5.7.2';
+    protected $pkgVersion = '2.0.2';
     
     public function getPackageDescription()
     {

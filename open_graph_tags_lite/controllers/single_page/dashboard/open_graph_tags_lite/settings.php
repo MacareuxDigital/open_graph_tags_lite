@@ -10,10 +10,10 @@ class Settings extends DashboardPageController {
     public function view()
     {
         $pkg = Package::getByHandle('open_graph_tags_lite');
-        $fb_admin = $pkg->getConfig()->get('open_graph_tags_lite.fb_admin_id');
-        $fb_app_id = $pkg->getConfig()->get('open_graph_tags_lite.fb_app_id');
-        $thumbnailID = $pkg->getConfig()->get('open_graph_tags_lite.og_thumbnail_id');
-        $twitter_site = $pkg->getConfig()->get('open_graph_tags_lite.twitter_site');
+        $fb_admin = $pkg->getConfig()->get('concrete.ogp.fb_admin_id');
+        $fb_app_id = $pkg->getConfig()->get('concrete.ogp.fb_app_id');
+        $thumbnailID = $pkg->getConfig()->get('concrete.ogp.og_thumbnail_id');
+        $twitter_site = $pkg->getConfig()->get('concrete.ogp.twitter_site');
         $this->set('fb_admin', $fb_admin);
         $this->set('fb_app_id', $fb_app_id);
         $this->set('thumbnailID', $thumbnailID);
@@ -43,10 +43,10 @@ class Settings extends DashboardPageController {
                 $og_thumbnail_id = $this->post('og_thumbnail_id');
                 $twitter_site = $this->post('twitter_site');
                 $pkg = Package::getByHandle('open_graph_tags_lite');
-                $pkg->getConfig()->save('open_graph_tags_lite.fb_admin_id', $fb_admin);
-                $pkg->getConfig()->save('open_graph_tags_lite.fb_app_id', $fb_app_id);
-                $pkg->getConfig()->save('open_graph_tags_lite.og_thumbnail_id', $og_thumbnail_id);
-                $pkg->getConfig()->save('open_graph_tags_lite.twitter_site', $twitter_site);
+                $pkg->getConfig()->save('concrete.ogp.fb_admin_id', $fb_admin);
+                $pkg->getConfig()->save('concrete.ogp.fb_app_id', $fb_app_id);
+                $pkg->getConfig()->save('concrete.ogp.og_thumbnail_id', $og_thumbnail_id);
+                $pkg->getConfig()->save('concrete.ogp.twitter_site', $twitter_site);
                 $this->redirect('/dashboard/open_graph_tags_lite/settings','updated');
             }
         } else {

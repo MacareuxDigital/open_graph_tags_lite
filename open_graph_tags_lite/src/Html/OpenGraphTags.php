@@ -1,5 +1,5 @@
-<?php
-namespace Concrete\Package\OpenGraphTagsLite\Html;
+<?php 
+namespace Concrete\Package\OpenGraphTagsLite\Src\Html;
 
 use Loader;
 use Page;
@@ -61,7 +61,7 @@ class OpenGraphTags {
         
         $og_image = $page->getAttribute('og_image');
         if (!$og_image instanceof File) {
-            $og_image = $page->getAttribute('page_thumbnail');
+            $og_image = $page->getAttribute('thumbnail');
             if (!$og_image instanceof File && !empty($thumbnailID)) {
                 $og_image = File::getByID($thumbnailID);
             }
