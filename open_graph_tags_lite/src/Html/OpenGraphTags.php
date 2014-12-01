@@ -23,10 +23,10 @@ class OpenGraphTags {
         }
         
         $pkg = Package::getByHandle('open_graph_tags_lite');
-        $fb_admin = $pkg->getConfig()->get('open_graph_tags_lite.fb_admin_id');
-        $fb_app_id = $pkg->getConfig()->get('open_graph_tags_lite.fb_app_id');
-        $thumbnailID = $pkg->getConfig()->get('open_graph_tags_lite.og_thumbnail_id');
-        $twitter_site = $pkg->getConfig()->get('open_graph_tags_lite.twitter_site');
+        $fb_admin = $pkg->getConfig()->get('concrete.ogp.fb_admin_id');
+        $fb_app_id = $pkg->getConfig()->get('concrete.ogp.fb_app_id');
+        $thumbnailID = $pkg->getConfig()->get('concrete.ogp.og_thumbnail_id');
+        $twitter_site = $pkg->getConfig()->get('concrete.ogp.twitter_site');
         
         $pageTitle = $page->getCollectionAttributeValue('og_title');
         if (!$pageTitle) {
