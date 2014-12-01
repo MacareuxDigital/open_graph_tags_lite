@@ -59,8 +59,8 @@
                         <td><?php echo t('The type of the entity. If this value is empty, "article" used instead.'); ?></td>
                     </tr>
                     <tr>
-                        <th><?php echo 'og_image'; ?></th>
-                        <td><?php echo t('An image that represents the entity. If this value is empty, "page_thumbnail" attribute used instead.'); ?></td>
+                        <th><?php  echo 'og_image'; ?></th>
+                        <td><?php  echo t('An image that represents the entity. If this value is empty, "thumbnail" attribute used instead.'); ?></td>
                     </tr>
                     <tr>
                         <th><?php echo 'twitter_card'; ?></th>
@@ -72,7 +72,7 @@
     </div>
     <div class="ccm-dashboard-form-actions-wrapper">
     <div class="ccm-dashboard-form-actions">
-        <button class="pull-right btn btn-success" type="submit" ><?=t('Save')?></button>
+        <button class="pull-right btn btn-success" type="submit" ><?php echo t('Save')?></button>
     </div>
     </div>
 
