@@ -54,8 +54,12 @@ class OpenGraphTagsLiteHelper {
 		$og_image = $page->getAttribute('og_image');
 		if (!$og_image instanceof File) {
 			$og_image = $page->getAttribute('page_thumbnail');
-			if (!$og_image instanceof File && !empty($thumbnailID)) {
-				$og_image = File::getByID($thumbnailID);
+			if (!$og_image instanceof File) {
+				// Additional tests added by JtF to extend sources to a blog thumbnail attribute
+				$og_image = $page->getAttribute('blog_thumbnail'); 
+				if (!$og_image instanceof File && !empty($thumbnailID)) {
+					$og_image = File::getByID($thumbnailID);
+				}
 			}
 		}
 		
