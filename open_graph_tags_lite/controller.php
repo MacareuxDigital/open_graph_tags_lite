@@ -11,8 +11,8 @@ use \Concrete\Package\OpenGraphTagsLite\Src\Html\OpenGraphTags;
 class Controller extends \Concrete\Core\Package\Package {
 
     protected $pkgHandle = 'open_graph_tags_lite';
-    protected $appVersionRequired = '5.7.2';
-    protected $pkgVersion = '2.0.2';
+    protected $appVersionRequired = '5.7.4';
+    protected $pkgVersion = '2.1';
     
     public function getPackageDescription()
     {
