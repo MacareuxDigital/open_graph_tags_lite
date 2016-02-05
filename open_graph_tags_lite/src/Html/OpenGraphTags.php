@@ -8,6 +8,7 @@ use File;
 use View;
 use Config;
 use Localization;
+use Concrete\Package\OpenGraphTagsLite\Src\Html\Object\OpenGraph;
 
 class OpenGraphTags {
     
@@ -17,6 +18,7 @@ class OpenGraphTags {
         $th = Loader::helper('text');
         
         $page = Page::getCurrentPage();
+        $v = $page->getPageController()->getViewObject();
         
         if (!is_object($page) || $page->getError() == COLLECTION_NOT_FOUND || $page->isAdminArea()) {
             return;
@@ -82,40 +84,36 @@ class OpenGraphTags {
             }
         }
 
-        $v = View::getInstance();
-        $v->addHeaderItem('<meta property="og:title" content="' . $th->entities($pageTitle) . '" />');
-        $v->addHeaderItem('<meta property="og:description" content="' . $th->entities($pageDescription) . '" />');
-        $v->addHeaderItem('<meta property="og:type" content="' .  $th->entities($pageOgType) . '" />');
-        $v->addHeaderItem('<meta property="og:url" content="' . $navigation->getLinkToCollection($page,true) . '" />');
+        $v->addHeaderAsset((string) OpenGraph::create('og:title', $pageTitle));
+        $v->addHeaderAsset((string) OpenGraph::create('og:description', $pageDescription));
+        $v->addHeaderAsset((string) OpenGraph::create('og:type', $pageOgType));
+        $v->addHeaderAsset((string) OpenGraph::create('og:url', $page->getCollectionLink(true)));
         if ( isset($og_image_url) && isset($og_image_width) && isset($og_image_height) ) {
-            $v->addHeaderItem('<meta property="og:image" content="' .  $og_image_url . '" />');
-            $v->addHeaderItem('<meta property="og:image:width" content="' .  $og_image_width . '" />');
-            $v->addHeaderItem('<meta property="og:image:height" content="' .  $og_image_height . '" />');
+            $v->addHeaderAsset((string) OpenGraph::create('og:image', $og_image_url));
+            $v->addHeaderAsset((string) OpenGraph::create('og:image:width', $og_image_width));
+            $v->addHeaderAsset((string) OpenGraph::create('og:image:height', $og_image_height));
         }
         if ( $page->getCollectionID() != HOME_CID ) {
-            $v->addHeaderItem('<meta property="og:site_name" content="' .  $th->entities(Config::get('concrete.site')) . '" />');
+            $v->addHeaderAsset((string) OpenGraph::create('og:site_name', tc('SiteName', Config::get('concrete.site'))));
         }
         if ( $fb_admin ) {
-            $v->addHeaderItem('<meta property="fb:admins" content="' . $th->entities($fb_admin) . '" />');
+            $v->addHeaderAsset((string) OpenGraph::create('fb:admins', $fb_admin));
         }
         if ( $fb_app_id ) {
-            $v->addHeaderItem('<meta property="fb:app_id" content="' . $th->entities($fb_app_id) . '" />');
+            $v->addHeaderAsset((string) OpenGraph::create('fb:app_id', $fb_app_id));
         }
         if ( $twitter_site ) {
-            $v->addHeaderItem('<meta name="twitter:card" content="' . $th->entities($pageTwitterCard) . '" />');
-            $v->addHeaderItem('<meta name="twitter:site" content="@' . $th->entities($twitter_site) . '" />');
+            $v->addHeaderAsset((string) OpenGraph::create('twitter:card', $pageTwitterCard));
+            $v->addHeaderAsset((string) OpenGraph::create('twitter:site', $twitter_site));
         }
         
         $localization = Localization::getInstance();
         $locale = $localization->getLocale();
-        $v->addHeaderItem('<meta name="og:locale" content="' . $th->entities($locale) . '" />');
+        $v->addHeaderAsset((string) OpenGraph::create('og:locale', $locale));
         
-        $cv = $page->getVersionObject();
-        if (is_object($cv)) {
-            $lastModified = $cv->getVersionDateCreated();
-            $lastModified = date(DATE_ATOM, strtotime($lastModified));
-            $v->addHeaderItem('<meta name="og:updated_time" content="' . $th->entities($lastModified) . '" />');
-        }
+        $lastModified = $page->getCollectionDateLastModified();
+        $lastModified = date(DATE_ATOM, strtotime($lastModified));
+        $v->addHeaderAsset((string) OpenGraph::create('og:updated_time', $lastModified));
     }
     
 }
