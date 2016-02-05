@@ -71,16 +71,9 @@ class OpenGraphTags
         if ($og_image instanceof File && !$og_image->isError()) {
             $fv = $og_image->getApprovedVersion();
             $size = $fv->getFullSize();
-            if ($size > 5000000) {
-                $thumb = Loader::helper('image')->getThumbnail($og_image, 1200, 630, true);
-                $og_image_width = $thumb->width;
-                $og_image_height = $thumb->height;
-                $og_image_url = BASE_URL . $thumb->src;
-            } else {
-                $og_image_width = $og_image->getAttribute('width');
-                $og_image_height = $og_image->getAttribute('height');
-                $og_image_url = BASE_URL . File::getRelativePathFromID($og_image->getFileID());
-            }
+            $og_image_width = $og_image->getAttribute('width');
+            $og_image_height = $og_image->getAttribute('height');
+            $og_image_url = $og_image->getURL();
         }
 
         $v->addHeaderAsset((string) OpenGraph::create('og:title', $pageTitle));
