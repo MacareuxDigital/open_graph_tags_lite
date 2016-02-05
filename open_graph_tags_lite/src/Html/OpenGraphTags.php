@@ -99,8 +99,7 @@ class OpenGraphTags
             $v->addHeaderAsset((string) OpenGraph::create('twitter:site', $twitter_site));
         }
 
-        $localization = Localization::getInstance();
-        $locale = $localization->getLocale();
+        $locale = Localization::activeLocale();
         $v->addHeaderAsset((string) OpenGraph::create('og:locale', $locale));
 
         $lastModified = $page->getCollectionDateLastModified();
