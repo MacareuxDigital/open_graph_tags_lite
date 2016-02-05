@@ -22,9 +22,9 @@ class OpenGraph extends Tag
     protected $element = 'meta';
 
     /**
-     * Whether the element is self closing
+     * Whether the element is self closing.
      *
-     * @var boolean
+     * @var bool
      */
     protected $isSelfClosing = true;
 
@@ -39,13 +39,13 @@ class OpenGraph extends Tag
         // HtmlObject does not escape attribute values.
         $this->setAttributes(array(
             'property' => h($property),
-            'content'  => h($content),
+            'content' => h($content),
         ));
     }
 
     /**
-    * Static alias for constructor.
-    */
+     * Static alias for constructor.
+     */
     public static function create($property, $content)
     {
         return new static($property, $content);
