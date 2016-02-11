@@ -49,7 +49,7 @@ class Controller extends \Concrete\Core\Package\Package {
     public function on_start()
     {
         $ogp = new OpenGraphTags();
-        Events::addListener('on_start', array($ogp,'insertTags'));
+        Events::addListener('on_before_render', array($ogp,'insertTags'));
     }
 
 }
