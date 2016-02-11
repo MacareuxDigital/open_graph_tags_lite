@@ -1,21 +1,17 @@
 <?php
 namespace Concrete\Package\OpenGraphTagsLite\Src\Html;
 
-use Loader;
-use Page;
 use Package;
 use File;
 use Config;
 use Localization;
 use Concrete\Package\OpenGraphTagsLite\Src\Html\Object\OpenGraph;
+use Core;
 
 class OpenGraphTags
 {
     public function insertTags($event)
     {
-        $navigation = Loader::helper("navigation");
-        $th = Loader::helper('text');
-
         $v = $event->getArgument('view');
         $page = $v->getPageObject();
 
@@ -44,7 +40,7 @@ class OpenGraphTags
         if (!$pageDescription) {
             $pageDescription = $page->getCollectionDescription();
         }
-        $pageDescription = $th->shortenTextWord($pageDescription, 200, '');
+        $pageDescription = Core::make('helper/text')->shortenTextWord($pageDescription, 200, '');
 
         $pageOgType = $page->getCollectionAttributeValue('og_type');
         if (!$pageOgType) {

@@ -8,10 +8,6 @@ use HtmlObject\Traits\Tag;
  *
  * <meta property="og:title" content="Example Title" />
  */
-
-/**
- * A Twitter Bootstrap media object.
- */
 class OpenGraph extends Tag
 {
     /**
