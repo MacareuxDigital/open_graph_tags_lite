@@ -11,13 +11,13 @@ use Concrete\Package\OpenGraphTagsLite\Src\Html\Object\OpenGraph;
 
 class OpenGraphTags
 {
-    public function insertTags($view)
+    public function insertTags($event)
     {
         $navigation = Loader::helper("navigation");
         $th = Loader::helper('text');
 
-        $page = Page::getCurrentPage();
-        $v = $page->getPageController()->getViewObject();
+        $v = $event->getArgument('view');
+        $page = $v->getPageObject();
 
         if (!is_object($page) || $page->getError() == COLLECTION_NOT_FOUND || $page->isAdminArea()) {
             return;
