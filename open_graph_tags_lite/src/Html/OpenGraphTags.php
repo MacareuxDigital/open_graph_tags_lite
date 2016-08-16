@@ -13,6 +13,10 @@ class OpenGraphTags
     public function insertTags($event)
     {
         $v = $event->getArgument('view');
+        if (!method_exists($v, 'getPageObject')) {
+            return;
+        }
+
         $page = $v->getPageObject();
 
         if (!is_object($page) || $page->getError() == COLLECTION_NOT_FOUND || $page->isAdminArea()) {
