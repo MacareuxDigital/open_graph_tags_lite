@@ -11,31 +11,38 @@
             <?php $al = Loader::helper('concrete/asset_library'); ?>
             <?php echo $al->image('og-thumbnail-id', 'og_thumbnail_id', 'Select Default Thumbnail', $imageObject); ?>
             <span class="help-block">
-                <?php echo t('Image referenced by og:image must be at least 600x315 pixels.'); ?>
+                <?php echo t('This image is used for og:image by default. Use images that are at least 1200 x 630 pixels for the best display on high resolution devices. At the minimum, you should use images that are 600 x 315 pixels to display link page posts with larger images. Images can be up to 8MB in size.'); ?>
             </span>
         </div>
     </fieldset>
     <fieldset>
         <legend><?php echo t('Facebook Setting'); ?></legend>
         <div class="form-group">
-            <?php echo $form->label('fb_admin', 'fb:admins'); ?>
-            <?php echo $form->text('fb_admin', $fb_admin); ?>
-        </div>
-        <div class="form-group">
             <?php echo $form->label('fb_app_id', 'fb:app_id'); ?>
             <?php echo $form->text('fb_app_id', $fb_app_id); ?>
+            <span class="help-block">
+                <?php echo t("In order to use %sFacebook Domain Insights%s you must add the app ID to your page. Domain Insights lets you view analytics for traffic to your site from Facebook. Find the app ID in your %sApp Dashboard%s.",
+                    '<a href="https://developers.facebook.com/docs/platforminsights/domains" target="_blank">', '</a>', '<a href="https://developers.facebook.com/apps/" target="_blank">', '</a>'); ?>
+            </span>
+        </div>
+        <div class="form-group">
+            <?php echo $form->label('fb_admin', 'fb:admins'); ?>
+            <?php echo $form->text('fb_admin', $fb_admin); ?>
+            <span class="help-block">
+                <?php echo t("The ID (or comma-separated list for properties that can accept multiple IDs) of an app, person using the app, or Page Graph API object."); ?>
+            </span>
         </div>
     </fieldset>
     <fieldset>
         <legend><?php echo t('Twitter Cards Setting'); ?></legend>
         <div class="form-group">
             <?php echo $form->label('twitter_site', t('Twitter Username')); ?>
-                <div class="input-group">
-                    <div class="input-group-addon">@</div>
-                    <?php echo $form->text('twitter_site', $twitter_site); ?>
-                </div>
+            <div class="input-group">
+                <div class="input-group-addon">@</div>
+                <?php echo $form->text('twitter_site', $twitter_site); ?>
+            </div>
             <span class="help-block">
-                <?php echo t('Twitter handle of the person to contact'); ?>
+                <?php echo t("Twitter @username of website. This value is required if you'd like to activate Twitter Card integration."); ?>
             </span>
         </div>
     </fieldset>
@@ -68,6 +75,15 @@
                     </tr>
                 </tbody>
             </table>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading"><?php echo t('Validator'); ?></div>
+        <div class="panel-body">
+            <ul>
+                <li><a href="https://developers.facebook.com/tools/debug/" target="_blank"><?php echo t('Facebook Sharing Debugger'); ?></a></li>
+                <li><a href="https://cards-dev.twitter.com/validator" target="_blank"><?php echo t('Twitter Card validator'); ?></a></li>
+            </ul>
         </div>
     </div>
     <div class="ccm-dashboard-form-actions-wrapper">
