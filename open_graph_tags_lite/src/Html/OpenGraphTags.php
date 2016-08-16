@@ -6,6 +6,7 @@ use File;
 use Config;
 use Localization;
 use Concrete\Package\OpenGraphTagsLite\Src\Html\Object\OpenGraph;
+use Concrete\Package\OpenGraphTagsLite\Src\Html\Object\TwitterCard;
 use Core;
 
 class OpenGraphTags
@@ -55,11 +56,6 @@ class OpenGraphTags
             }
         }
 
-        $pageTwitterCard = $page->getCollectionAttributeValue('twitter_card');
-        if (!$pageTwitterCard) {
-            $pageTwitterCard = 'summary';
-        }
-
         $og_image = $page->getAttribute('og_image');
         if (!$og_image instanceof File) {
             $og_image = $page->getAttribute('thumbnail');
@@ -70,10 +66,18 @@ class OpenGraphTags
 
         if ($og_image instanceof File && !$og_image->isError()) {
             $fv = $og_image->getApprovedVersion();
-            $size = $fv->getFullSize();
             $og_image_width = $og_image->getAttribute('width');
             $og_image_height = $og_image->getAttribute('height');
             $og_image_url = $og_image->getURL();
+        }
+
+        $pageTwitterCard = $page->getCollectionAttributeValue('twitter_card');
+        if (!$pageTwitterCard) {
+            if (isset($og_image_width) && $og_image_width > 280) {
+                $pageTwitterCard = 'summary_large_image';
+            } else {
+                $pageTwitterCard = 'summary';
+            }
         }
 
         $v->addHeaderAsset((string) OpenGraph::create('og:title', $pageTitle));
@@ -81,9 +85,11 @@ class OpenGraphTags
         $v->addHeaderAsset((string) OpenGraph::create('og:type', $pageOgType));
         $v->addHeaderAsset((string) OpenGraph::create('og:url', $page->getCollectionLink(true)));
         if (isset($og_image_url) && isset($og_image_width) && isset($og_image_height)) {
-            $v->addHeaderAsset((string) OpenGraph::create('og:image', $og_image_url));
-            $v->addHeaderAsset((string) OpenGraph::create('og:image:width', $og_image_width));
-            $v->addHeaderAsset((string) OpenGraph::create('og:image:height', $og_image_height));
+            if ($og_image_width >= 200 && $og_image_height >= 200) {
+                $v->addHeaderAsset((string)OpenGraph::create('og:image', $og_image_url));
+                $v->addHeaderAsset((string)OpenGraph::create('og:image:width', $og_image_width));
+                $v->addHeaderAsset((string)OpenGraph::create('og:image:height', $og_image_height));
+            }
         }
         if ($page->getCollectionID() != HOME_CID) {
             $v->addHeaderAsset((string) OpenGraph::create('og:site_name', tc('SiteName', Config::get('concrete.site'))));
@@ -95,8 +101,13 @@ class OpenGraphTags
             $v->addHeaderAsset((string) OpenGraph::create('fb:app_id', $fb_app_id));
         }
         if ($twitter_site) {
-            $v->addHeaderAsset((string) OpenGraph::create('twitter:card', $pageTwitterCard));
-            $v->addHeaderAsset((string) OpenGraph::create('twitter:site', $twitter_site));
+            $v->addHeaderAsset((string) TwitterCard::create('card', $pageTwitterCard));
+            $v->addHeaderAsset((string) TwitterCard::create('site', $twitter_site));
+            $v->addHeaderAsset((string) TwitterCard::create('title', $pageTitle));
+            $v->addHeaderAsset((string) TwitterCard::create('description', $pageDescription));
+            if (isset($og_image_url)) {
+                $v->addHeaderAsset((string) TwitterCard::create('image', $og_image_url));
+            }
         }
 
         $locale = Localization::activeLocale();
