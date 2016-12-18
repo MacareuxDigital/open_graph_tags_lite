@@ -57,15 +57,14 @@ class OpenGraphTags
         }
 
         $og_image = $page->getAttribute('og_image');
-        if (!$og_image instanceof File) {
+        if (!is_object($og_image)) {
             $og_image = $page->getAttribute('thumbnail');
-            if (!$og_image instanceof File && !empty($thumbnailID)) {
+            if (!is_object($og_image) && !empty($thumbnailID)) {
                 $og_image = File::getByID($thumbnailID);
             }
         }
 
-        if ($og_image instanceof File && !$og_image->isError()) {
-            $fv = $og_image->getApprovedVersion();
+        if (is_object($og_image) && !$og_image->isError()) {
             $og_image_width = $og_image->getAttribute('width');
             $og_image_height = $og_image->getAttribute('height');
             $og_image_url = $og_image->getURL();
