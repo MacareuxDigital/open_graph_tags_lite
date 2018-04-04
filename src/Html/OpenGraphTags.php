@@ -56,9 +56,9 @@ class OpenGraphTags
             }
         }
 
-        $og_image = $page->getAttribute('og_image');
+        $og_image = $page->getAttribute('thumbnail');
         if (!is_object($og_image)) {
-            $og_image = $page->getAttribute('thumbnail');
+            $og_image = $page->getAttribute('og_image');
             if (!is_object($og_image) && !empty($thumbnailID)) {
                 $og_image = File::getByID($thumbnailID);
             }
@@ -99,14 +99,17 @@ class OpenGraphTags
         if ($fb_app_id) {
             $v->addHeaderAsset((string) OpenGraph::create('fb:app_id', $fb_app_id));
         }
+        $v->addHeaderAsset((string)TwitterCard::create('card', $pageTwitterCard));
         if ($twitter_site) {
-            $v->addHeaderAsset((string) TwitterCard::create('card', $pageTwitterCard));
-            $v->addHeaderAsset((string) TwitterCard::create('site', $twitter_site));
-            $v->addHeaderAsset((string) TwitterCard::create('title', $pageTitle));
-            $v->addHeaderAsset((string) TwitterCard::create('description', $pageDescription));
-            if (isset($og_image_url)) {
-                $v->addHeaderAsset((string) TwitterCard::create('image', $og_image_url));
+            if (substr($twitter_site, 0, 1) !== '@') {
+                $twitter_site = '@' . $twitter_site;
             }
+            $v->addHeaderAsset((string)TwitterCard::create('site', $twitter_site));
+        }
+        $v->addHeaderAsset((string) TwitterCard::create('title', $pageTitle));
+        $v->addHeaderAsset((string) TwitterCard::create('description', $pageDescription));
+        if (isset($og_image_url)) {
+            $v->addHeaderAsset((string) TwitterCard::create('image', $og_image_url));
         }
 
         $locale = Localization::activeLocale();
