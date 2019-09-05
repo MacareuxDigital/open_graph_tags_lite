@@ -33,10 +33,10 @@ class TwitterCard extends Tag
     public function __construct($name, $content)
     {
         // HtmlObject does not escape attribute values.
-        $this->setAttributes(array(
+        $this->setAttributes([
             'name' => 'twitter:' . h($name),
             'content' => h($content),
-        ));
+        ]);
     }
 
     /**

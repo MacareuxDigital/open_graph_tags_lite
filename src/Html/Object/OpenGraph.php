@@ -33,10 +33,10 @@ class OpenGraph extends Tag
     public function __construct($property, $content)
     {
         // HtmlObject does not escape attribute values.
-        $this->setAttributes(array(
+        $this->setAttributes([
             'property' => h($property),
             'content' => h($content),
-        ));
+        ]);
     }
 
     /**

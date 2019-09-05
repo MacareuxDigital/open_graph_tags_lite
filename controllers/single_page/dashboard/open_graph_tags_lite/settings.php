@@ -1,18 +1,15 @@
 <?php
-
 namespace Concrete\Package\OpenGraphTagsLite\Controller\SinglePage\Dashboard\OpenGraphTagsLite;
 
-use Concrete\Core\Error\ErrorList\ErrorList;
-use \Concrete\Core\Page\Controller\DashboardPageController;
+use Concrete\Core\Page\Controller\DashboardPageController;
 use Package;
 use File;
 
 class Settings extends DashboardPageController
 {
-
     public function updated()
     {
-        $this->set('message', t("Settings saved."));
+        $this->set('message', t('Settings saved.'));
         $this->view();
     }
 
@@ -39,7 +36,7 @@ class Settings extends DashboardPageController
 
     public function save_settings()
     {
-        if (!$this->token->validate("save_settings")) {
+        if (!$this->token->validate('save_settings')) {
             $this->error->add($this->token->getErrorMessage());
         }
 
@@ -60,5 +57,4 @@ class Settings extends DashboardPageController
             $this->redirect('/dashboard/open_graph_tags_lite/settings', 'updated');
         }
     }
-
 }

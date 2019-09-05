@@ -81,9 +81,9 @@ class OpenGraphTags
         $v->addHeaderAsset((string) OpenGraph::create('og:url', $page->getCollectionLink(true)));
         if (isset($og_image_url) && isset($og_image_width) && isset($og_image_height)) {
             if ($og_image_width >= 200 && $og_image_height >= 200) {
-                $v->addHeaderAsset((string)OpenGraph::create('og:image', $og_image_url));
-                $v->addHeaderAsset((string)OpenGraph::create('og:image:width', $og_image_width));
-                $v->addHeaderAsset((string)OpenGraph::create('og:image:height', $og_image_height));
+                $v->addHeaderAsset((string) OpenGraph::create('og:image', $og_image_url));
+                $v->addHeaderAsset((string) OpenGraph::create('og:image:width', $og_image_width));
+                $v->addHeaderAsset((string) OpenGraph::create('og:image:height', $og_image_height));
             }
         }
         if ($page->getCollectionID() != HOME_CID) {
@@ -95,12 +95,12 @@ class OpenGraphTags
         if ($fb_app_id) {
             $v->addHeaderAsset((string) OpenGraph::create('fb:app_id', $fb_app_id));
         }
-        $v->addHeaderAsset((string)TwitterCard::create('card', $pageTwitterCard));
+        $v->addHeaderAsset((string) TwitterCard::create('card', $pageTwitterCard));
         if ($twitter_site) {
             if (substr($twitter_site, 0, 1) !== '@') {
                 $twitter_site = '@' . $twitter_site;
             }
-            $v->addHeaderAsset((string)TwitterCard::create('site', $twitter_site));
+            $v->addHeaderAsset((string) TwitterCard::create('site', $twitter_site));
         }
         $v->addHeaderAsset((string) TwitterCard::create('title', $pageTitle));
         $v->addHeaderAsset((string) TwitterCard::create('description', $pageDescription));
