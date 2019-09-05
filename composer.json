@@ -1,0 +1,11 @@
+
+{
+  "name": "concrete5cojp/open_graph_tags_lite",
+  "description": "Auto insert Open Graph Tags (OGP) into HEAD tag",
+  "type": "concrete5-package",
+  "license": "MIT",
+  "minimum-stability": "stable",
+  "require": {
+    "concrete5/core": "^8.5"
+  }
+}
