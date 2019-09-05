@@ -8,64 +8,63 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-09-05T09:15:42+00:00\n"
-"PO-Revision-Date: 2019-09-05 18:19+0900\n"
-"Language: ja_JP\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 2.2.3\n"
+"PO-Revision-Date: 2019-09-05T09:15:42+00:00\n"
+"Language: en_US\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 
 #: packages/open_graph_tags_lite/controller.php:19
 #: packages/open_graph_tags_lite/controller.php:34
 msgid "Auto insert Open Graph Tags (OGP) into HEAD tag"
-msgstr "HEADタグに自動的に Open Graph Tags（OGP）を挿入"
+msgstr ""
 
 #: packages/open_graph_tags_lite/controller.php:24
 #: packages/open_graph_tags_lite/controller.php:34
 msgid "Open Graph Tags Lite"
-msgstr "Open Graph Tags Lite"
+msgstr ""
 
 #: packages/open_graph_tags_lite/controller.php:38
 msgid "Open Graph Tags Settings"
-msgstr "オープングラフタグ設定"
+msgstr ""
 
 #: packages/open_graph_tags_lite/controller.php:45
 msgid "og:image"
-msgstr "og:image"
+msgstr ""
 
 #: packages/open_graph_tags_lite/single_pages/dashboard/open_graph_tags_lite/settings.php:8
 msgid "Default Thumbnail"
-msgstr "デフォルトサムネイル画像"
+msgstr ""
 
 #: packages/open_graph_tags_lite/single_pages/dashboard/open_graph_tags_lite/settings.php:14
 msgid "This image is used for og:image by default. See %sSharing Best Practices for Websites%s"
-msgstr "この画像はデフォルトの og:image に使われます。%sウェブサイトのシェアのベストプラクティス%sもご覧ください"
+msgstr ""
 
 #: packages/open_graph_tags_lite/single_pages/dashboard/open_graph_tags_lite/settings.php:19
 msgid "Facebook Setting"
-msgstr "Facebook設定"
+msgstr ""
 
 #: packages/open_graph_tags_lite/single_pages/dashboard/open_graph_tags_lite/settings.php:27
 msgid "In order to use %sFacebook Insights%s you must add the app ID to your page. Insights lets you view analytics for traffic to your site from Facebook. Find the app ID in your %sApp Dashboard%s."
-msgstr "%sFacebookインサイト%sを使用するには、アプリIDをページに追加する必要があります。インサイトにより、Facebookからサイトへのトラフィックに関する分析を確認できます。%sアプリダッシュボード%sでアプリIDを確認してください。"
+msgstr ""
 
 #: packages/open_graph_tags_lite/single_pages/dashboard/open_graph_tags_lite/settings.php:35
 msgid "The ID (or comma-separated list for properties that can accept multiple IDs) of an app, person using the app, or Page Graph API object."
-msgstr "app, app の使用者、Page Graph API オブジェクトのIDを指定します。カンマ区切りで複数指定が可能です。"
+msgstr ""
 
 #: packages/open_graph_tags_lite/single_pages/dashboard/open_graph_tags_lite/settings.php:40
 msgid "Twitter Cards Setting"
-msgstr "Twitter Cards 設定"
+msgstr ""
 
 #: packages/open_graph_tags_lite/single_pages/dashboard/open_graph_tags_lite/settings.php:42
 msgid "Twitter Username"
-msgstr "Twitterユーザー名"
+msgstr ""
 
 #: packages/open_graph_tags_lite/single_pages/dashboard/open_graph_tags_lite/settings.php:48
 msgid "Twitter @username of website. This value is required if you'd like to activate Twitter Card integration."
-msgstr "ウェブサイトの Twitter の @ユーザー名 を指定します。Twitter Card 連携を有効にするにはこの値は必須です。"
+msgstr ""
 
 #: packages/open_graph_tags_lite/single_pages/dashboard/open_graph_tags_lite/settings.php:53
 msgid "Page Attribute Reference"
-msgstr "ページ属性リファレンス"
+msgstr ""
 
 #: packages/open_graph_tags_lite/single_pages/dashboard/open_graph_tags_lite/settings.php:58
 msgid "Handle"
@@ -77,31 +76,31 @@ msgstr ""
 
 #: packages/open_graph_tags_lite/single_pages/dashboard/open_graph_tags_lite/settings.php:65
 msgid "The title of the entity. If this value is empty, \"meta_title\" attribute or page name used instead."
-msgstr "エンティティのタイトル。この値が空のとき、「meta_title」属性か、ページ名が代わりに使われます。"
+msgstr ""
 
 #: packages/open_graph_tags_lite/single_pages/dashboard/open_graph_tags_lite/settings.php:69
 msgid "The type of the entity. If this value is empty, \"website\" used instead."
-msgstr "エンティティのタイプ。この値が空の時、\"website\" が代わりに使われます。"
+msgstr ""
 
 #: packages/open_graph_tags_lite/single_pages/dashboard/open_graph_tags_lite/settings.php:73
 msgid "An image that represents the entity. If this value is empty, \"thumbnail\" attribute used instead."
-msgstr "エンティティを表現する画像。この値が空のとき、「thumbnail」属性が代わりに使われます。"
+msgstr ""
 
 #: packages/open_graph_tags_lite/single_pages/dashboard/open_graph_tags_lite/settings.php:77
 msgid "The card type, which will be one of \"summary\", \"summary_large_image\", \"app\", or \"player\". If this value is empty, \"summary\" or \"summary_large_image\" used instead."
-msgstr "カードタイプは \"summary\", \"summary_large_image\", \"app\", \"player\" のいずれかになります。この値が空の時、\"summary\" または \"summary_large_image\" が代わりに使用されます。"
+msgstr ""
 
 #: packages/open_graph_tags_lite/single_pages/dashboard/open_graph_tags_lite/settings.php:84
 msgid "Validator"
-msgstr "バリデーター"
+msgstr ""
 
 #: packages/open_graph_tags_lite/single_pages/dashboard/open_graph_tags_lite/settings.php:88
 msgid "Facebook Sharing Debugger"
-msgstr "Facebook Sharing Debugger"
+msgstr ""
 
 #: packages/open_graph_tags_lite/single_pages/dashboard/open_graph_tags_lite/settings.php:90
 msgid "Twitter Card validator"
-msgstr "Twitter Card validator"
+msgstr ""
 
 #: packages/open_graph_tags_lite/single_pages/dashboard/open_graph_tags_lite/settings.php:96
 msgid "Save"
@@ -109,8 +108,8 @@ msgstr ""
 
 #: packages/open_graph_tags_lite/controllers/single_page/dashboard/open_graph_tags_lite/settings.php:12
 msgid "Settings saved."
-msgstr "設定を保存しました。"
+msgstr ""
 
 #: packages/open_graph_tags_lite/controllers/single_page/dashboard/open_graph_tags_lite/settings.php:44
 msgid "You must set fb:admin value."
-msgstr "fb:admin は必須項目です。"
+msgstr ""
