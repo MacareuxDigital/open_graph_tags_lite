@@ -49,11 +49,7 @@ class OpenGraphTags
 
         $pageOgType = $page->getCollectionAttributeValue('og_type');
         if (!$pageOgType) {
-            if ($page->getCollectionID() == HOME_CID) {
-                $pageOgType = 'website';
-            } else {
-                $pageOgType = 'article';
-            }
+            $pageOgType = 'website';
         }
 
         $og_image = $page->getAttribute('thumbnail');

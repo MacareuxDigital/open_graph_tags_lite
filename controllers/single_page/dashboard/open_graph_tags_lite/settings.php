@@ -1,11 +1,20 @@
 <?php
+
 namespace Concrete\Package\OpenGraphTagsLite\Controller\SinglePage\Dashboard\OpenGraphTagsLite;
 
+use Concrete\Core\Error\ErrorList\ErrorList;
 use \Concrete\Core\Page\Controller\DashboardPageController;
 use Package;
 use File;
 
-class Settings extends DashboardPageController {
+class Settings extends DashboardPageController
+{
+
+    public function updated()
+    {
+        $this->set('message', t("Settings saved."));
+        $this->view();
+    }
 
     public function view()
     {
@@ -20,7 +29,7 @@ class Settings extends DashboardPageController {
         $imageObject = false;
         if (!empty($thumbnailID)) {
             $imageObject = File::getByID($thumbnailID);
-            if (is_object($imageObject) && $imageObject->isError()) { 
+            if (is_object($imageObject) && $imageObject->isError()) {
                 unset($imageObject);
             }
         }
@@ -28,29 +37,27 @@ class Settings extends DashboardPageController {
         $this->set('twitter_site', $twitter_site);
     }
 
-    public function updated()
-    {
-        $this->set('message', t("Settings saved."));    
-        $this->view();
-    }
-    
     public function save_settings()
     {
-        if ($this->token->validate("save_settings")) {
-            if ($this->isPost()) {
-                $fb_admin = $this->post('fb_admin');
-                $fb_app_id = $this->post('fb_app_id');
-                $og_thumbnail_id = $this->post('og_thumbnail_id');
-                $twitter_site = $this->post('twitter_site');
-                $pkg = Package::getByHandle('open_graph_tags_lite');
-                $pkg->getConfig()->save('concrete.ogp.fb_admin_id', $fb_admin);
-                $pkg->getConfig()->save('concrete.ogp.fb_app_id', $fb_app_id);
-                $pkg->getConfig()->save('concrete.ogp.og_thumbnail_id', $og_thumbnail_id);
-                $pkg->getConfig()->save('concrete.ogp.twitter_site', $twitter_site);
-                $this->redirect('/dashboard/open_graph_tags_lite/settings','updated');
-            }
-        } else {
-            $this->set('error', array($this->token->getErrorMessage()));
+        if (!$this->token->validate("save_settings")) {
+            $this->error->add($this->token->getErrorMessage());
+        }
+
+        if (!$this->isPost() || empty($this->post('fb_admin'))) {
+            $this->error->add(t('You must set fb:admin value.'));
+        }
+
+        if (!$this->error->has()) {
+            $fb_admin = $this->post('fb_admin');
+            $fb_app_id = $this->post('fb_app_id');
+            $og_thumbnail_id = $this->post('og_thumbnail_id');
+            $twitter_site = $this->post('twitter_site');
+            $pkg = Package::getByHandle('open_graph_tags_lite');
+            $pkg->getConfig()->save('concrete.ogp.fb_admin_id', $fb_admin);
+            $pkg->getConfig()->save('concrete.ogp.fb_app_id', $fb_app_id);
+            $pkg->getConfig()->save('concrete.ogp.og_thumbnail_id', $og_thumbnail_id);
+            $pkg->getConfig()->save('concrete.ogp.twitter_site', $twitter_site);
+            $this->redirect('/dashboard/open_graph_tags_lite/settings', 'updated');
         }
     }
 
