@@ -40,10 +40,6 @@ class Settings extends DashboardPageController
             $this->error->add($this->token->getErrorMessage());
         }
 
-        if (!$this->isPost() || empty($this->post('fb_admin'))) {
-            $this->error->add(t('You must set fb:admin value.'));
-        }
-
         if (!$this->error->has()) {
             $fb_admin = $this->post('fb_admin');
             $fb_app_id = $this->post('fb_app_id');

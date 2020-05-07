@@ -21,7 +21,6 @@
             <?php echo $form->label('fb_app_id', 'fb:app_id'); ?>
             <div class="input-group">
                 <?php echo $form->text('fb_app_id', $fb_app_id); ?>
-                <div class="input-group-addon"><i class="fa fa-asterisk"></i></div>
             </div>
             <span class="help-block">
                 <?php echo t("In order to use %sFacebook Insights%s you must add the app ID to your page. Insights lets you view analytics for traffic to your site from Facebook. Find the app ID in your %sApp Dashboard%s.",
@@ -31,9 +30,6 @@
         <div class="form-group">
             <?php echo $form->label('fb_admin', 'fb:admins'); ?>
             <?php echo $form->text('fb_admin', $fb_admin); ?>
-            <span class="help-block">
-                <?php echo t("The ID (or comma-separated list for properties that can accept multiple IDs) of an app, person using the app, or Page Graph API object."); ?>
-            </span>
         </div>
     </fieldset>
     <fieldset>

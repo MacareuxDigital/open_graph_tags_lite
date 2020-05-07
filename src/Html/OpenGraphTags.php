@@ -86,8 +86,9 @@ class OpenGraphTags
                 $v->addHeaderAsset((string) OpenGraph::create('og:image:height', $og_image_height));
             }
         }
-        if ($page->getCollectionID() != HOME_CID) {
-            $v->addHeaderAsset((string) OpenGraph::create('og:site_name', tc('SiteName', Config::get('concrete.site'))));
+        $siteName = Config::get('concrete.site');
+        if ($siteName) {
+            $v->addHeaderAsset((string) OpenGraph::create('og:site_name', tc('SiteName', $siteName)));
         }
         if ($fb_admin) {
             $v->addHeaderAsset((string) OpenGraph::create('fb:admins', $fb_admin));
