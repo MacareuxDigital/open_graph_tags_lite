@@ -52,9 +52,9 @@ class OpenGraphTags
             $pageOgType = 'website';
         }
 
-        $og_image = $page->getAttribute('thumbnail');
+        $og_image = $page->getAttribute('og_image');
         if (!is_object($og_image)) {
-            $og_image = $page->getAttribute('og_image');
+            $og_image = $page->getAttribute('thumbnail');
             if (!is_object($og_image) && !empty($thumbnailID)) {
                 $og_image = File::getByID($thumbnailID);
             }
