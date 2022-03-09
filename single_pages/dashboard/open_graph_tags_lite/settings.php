@@ -37,7 +37,7 @@
         <div class="form-group">
             <?php echo $form->label('twitter_site', t('Twitter Username')); ?>
             <div class="input-group">
-                <div class="input-group-addon">@</div>
+                <div class="input-group-addon input-group-text">@</div>
                 <?php echo $form->text('twitter_site', $twitter_site); ?>
             </div>
             <span class="help-block">
@@ -89,7 +89,7 @@
     </div>
     <div class="ccm-dashboard-form-actions-wrapper">
         <div class="ccm-dashboard-form-actions">
-            <button class="pull-right btn btn-success" type="submit"><?php echo t('Save') ?></button>
+            <button class="float-end btn btn-success" type="submit"><?php echo t('Save') ?></button>
         </div>
     </div>
 
