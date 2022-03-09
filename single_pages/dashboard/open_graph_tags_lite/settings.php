@@ -37,7 +37,7 @@
         <div class="form-group">
             <?php echo $form->label('twitter_site', t('Twitter Username')); ?>
             <div class="input-group">
-                <div class="input-group-text">@</div>
+                <div class="input-group-addon input-group-text">@</div>
                 <?php echo $form->text('twitter_site', $twitter_site); ?>
             </div>
             <span class="help-block">
