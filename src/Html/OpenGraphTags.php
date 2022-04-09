@@ -1,6 +1,7 @@
 <?php
 namespace Concrete\Package\OpenGraphTagsLite\Src\Html;
 
+use Concrete\Core\Page\Page;
 use Package;
 use File;
 use Config;
@@ -18,6 +19,7 @@ class OpenGraphTags
             return;
         }
 
+        /** @var Page $page */
         $page = $v->getPageObject();
 
         if (!is_object($page) || $page->getError() == COLLECTION_NOT_FOUND || $page->isAdminArea()) {
@@ -112,8 +114,9 @@ class OpenGraphTags
         $locale = Localization::activeLocale();
         $v->addHeaderAsset((string) OpenGraph::create('og:locale', $locale));
 
-        $lastModified = $page->getCollectionDateLastModified();
-        $lastModified = date(DATE_ATOM, strtotime($lastModified));
-        $v->addHeaderAsset((string) OpenGraph::create('og:updated_time', $lastModified));
+        $published = date(DATE_ISO8601, strtotime($page->getCollectionDatePublic()));
+        $v->addHeaderAsset((string) OpenGraph::create('article:published_time', $published));
+        $lastModified = date(DATE_ISO8601, strtotime($page->getCollectionDateLastModified()));
+        $v->addHeaderAsset((string) OpenGraph::create('article:modified_time', $lastModified));
     }
 }
