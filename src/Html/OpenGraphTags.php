@@ -7,6 +7,7 @@ use Concrete\Core\File\File;
 use Concrete\Core\Localization\Localization;
 use Concrete\Core\Package\PackageService;
 use Concrete\Core\Page\Page;
+use Concrete\Core\Site\Service;
 use Concrete\Core\Support\Facade\Application;
 use Concrete\Package\OpenGraphTagsLite\Src\Html\Object\OpenGraph;
 use Concrete\Package\OpenGraphTagsLite\Src\Html\Object\TwitterCard;
@@ -141,6 +142,11 @@ class OpenGraphTags
             }
         }
         $site = $page->getSite();
+        if (!$site) {
+            /** @var Service $siteService */
+            $siteService = $app->make(Service::class);
+            $site = $siteService->getDefault();
+        }
         $siteName = $site->getSiteName();
         if ($siteName) {
             $v->addHeaderAsset((string) OpenGraph::create('og:site_name', tc('SiteName', $siteName)));
@@ -164,10 +170,14 @@ class OpenGraphTags
             $v->addHeaderAsset((string) TwitterCard::create('image', $og_image_url));
         }
 
-        $siteLocale = $page->getSiteTreeObject()->getLocale();
-        if ($siteLocale instanceof Locale) {
-            $locale = $siteLocale->getLocale();
-        } else {
+        $siteTree = $page->getSiteTreeObject();
+        if ($siteTree) {
+            $siteLocale = $siteTree->getLocale();
+            if ($siteLocale instanceof Locale) {
+                $locale = $siteLocale->getLocale();
+            }
+        }
+        if (!isset($locale)) {
             $locale = Localization::activeLocale();
         }
         $v->addHeaderAsset((string) OpenGraph::create('og:locale', $locale));
