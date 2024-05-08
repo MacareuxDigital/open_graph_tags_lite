@@ -1,17 +1,56 @@
 <?php
 namespace Concrete\Package\OpenGraphTagsLite\Src\Html;
 
+use Concrete\Core\Entity\File\File as FileEntity;
+use Concrete\Core\Entity\Site\Locale;
+use Concrete\Core\File\File;
+use Concrete\Core\Localization\Localization;
+use Concrete\Core\Package\PackageService;
 use Concrete\Core\Page\Page;
-use Package;
-use File;
-use Config;
-use Localization;
+use Concrete\Core\Support\Facade\Application;
 use Concrete\Package\OpenGraphTagsLite\Src\Html\Object\OpenGraph;
 use Concrete\Package\OpenGraphTagsLite\Src\Html\Object\TwitterCard;
-use Core;
 
 class OpenGraphTags
 {
+    protected $overriddenPageTitle = '';
+    protected $overriddenPageDescription = '';
+    /** @var FileEntity|null */
+    protected $overriddenImageFile;
+
+    public function getOverriddenImageFile(): ?FileEntity
+    {
+        return $this->overriddenImageFile;
+    }
+
+    public function setOverriddenImageFile(?FileEntity $overriddenImageFile): OpenGraphTags
+    {
+        $this->overriddenImageFile = $overriddenImageFile;
+        return $this;
+    }
+
+    public function getOverriddenPageDescription(): string
+    {
+        return $this->overriddenPageDescription;
+    }
+
+    public function setOverriddenPageDescription(string $overriddenPageDescription): OpenGraphTags
+    {
+        $this->overriddenPageDescription = $overriddenPageDescription;
+        return $this;
+    }
+
+    public function getOverriddenPageTitle(): string
+    {
+        return $this->overriddenPageTitle;
+    }
+
+    public function setOverriddenPageTitle(string $overriddenPageTitle): OpenGraphTags
+    {
+        $this->overriddenPageTitle = $overriddenPageTitle;
+        return $this;
+    }
+
     public function insertTags($event)
     {
         $v = $event->getArgument('view');
@@ -26,49 +65,62 @@ class OpenGraphTags
             return;
         }
 
-        $pkg = Package::getByHandle('open_graph_tags_lite');
+        $app = Application::getFacadeApplication();
+
+        /** @var PackageService $packageService */
+        $packageService = $app->make(PackageService::class);
+        $pkg = $packageService->getByHandle('open_graph_tags_lite');
         $fb_admin = $pkg->getConfig()->get('concrete.ogp.fb_admin_id');
         $fb_app_id = $pkg->getConfig()->get('concrete.ogp.fb_app_id');
         $thumbnailID = $pkg->getConfig()->get('concrete.ogp.og_thumbnail_id');
         $twitter_site = $pkg->getConfig()->get('concrete.ogp.twitter_site');
 
-        $pageTitle = $page->getCollectionAttributeValue('og_title');
+        $pageTitle = $this->getOverriddenPageTitle();
         if (!$pageTitle) {
-            $pageTitle = $page->getCollectionAttributeValue('meta_title');
+            $pageTitle = $page->getAttribute('og_title');
             if (!$pageTitle) {
-                $pageTitle = $page->getCollectionName();
-                if ($page->isSystemPage()) {
-                    $pageTitle = t($pageTitle);
+                $pageTitle = $page->getAttribute('meta_title');
+                if (!$pageTitle) {
+                    $pageTitle = $page->getCollectionName();
+                    if ($page->isSystemPage()) {
+                        $pageTitle = t($pageTitle);
+                    }
                 }
             }
         }
 
-        $pageDescription = $page->getCollectionAttributeValue('meta_description');
+        $pageDescription = $this->getOverriddenPageDescription();
         if (!$pageDescription) {
-            $pageDescription = $page->getCollectionDescription();
+            $pageDescription = $page->getAttribute('meta_description');
+            if (!$pageDescription) {
+                $pageDescription = $page->getCollectionDescription();
+            }
         }
-        $pageDescription = Core::make('helper/text')->shortenTextWord($pageDescription, 200, '');
+        $pageDescription = $app->make('helper/text')->shortenTextWord($pageDescription, 200, '');
 
-        $pageOgType = $page->getCollectionAttributeValue('og_type');
+        $pageOgType = $page->getAttribute('og_type');
         if (!$pageOgType) {
             $pageOgType = 'website';
         }
 
-        $og_image = $page->getAttribute('og_image');
-        if (!is_object($og_image)) {
-            $og_image = $page->getAttribute('thumbnail');
-            if (!is_object($og_image) && !empty($thumbnailID)) {
-                $og_image = File::getByID($thumbnailID);
+        $og_image = $this->getOverriddenImageFile();
+        if (!$og_image) {
+            $og_image = $page->getAttribute('og_image');
+            if (!is_object($og_image)) {
+                $og_image = $page->getAttribute('thumbnail');
+                if (!is_object($og_image) && !empty($thumbnailID)) {
+                    $og_image = File::getByID($thumbnailID);
+                }
             }
         }
 
-        if (is_object($og_image) && !$og_image->isError()) {
+        if (is_object($og_image)) {
             $og_image_width = $og_image->getAttribute('width');
             $og_image_height = $og_image->getAttribute('height');
             $og_image_url = $og_image->getURL();
         }
 
-        $pageTwitterCard = $page->getCollectionAttributeValue('twitter_card');
+        $pageTwitterCard = $page->getAttribute('twitter_card');
         if (!$pageTwitterCard) {
             if (isset($og_image_width) && $og_image_width > 280) {
                 $pageTwitterCard = 'summary_large_image';
@@ -88,7 +140,8 @@ class OpenGraphTags
                 $v->addHeaderAsset((string) OpenGraph::create('og:image:height', $og_image_height));
             }
         }
-        $siteName = Config::get('concrete.site');
+        $site = $page->getSite();
+        $siteName = $site->getSiteName();
         if ($siteName) {
             $v->addHeaderAsset((string) OpenGraph::create('og:site_name', tc('SiteName', $siteName)));
         }
@@ -111,12 +164,23 @@ class OpenGraphTags
             $v->addHeaderAsset((string) TwitterCard::create('image', $og_image_url));
         }
 
-        $locale = Localization::activeLocale();
+        $siteLocale = $page->getSiteTreeObject()->getLocale();
+        if ($siteLocale instanceof Locale) {
+            $locale = $siteLocale->getLocale();
+        } else {
+            $locale = Localization::activeLocale();
+        }
         $v->addHeaderAsset((string) OpenGraph::create('og:locale', $locale));
 
-        $published = date(DATE_ISO8601, strtotime($page->getCollectionDatePublic()));
-        $v->addHeaderAsset((string) OpenGraph::create('article:published_time', $published));
-        $lastModified = date(DATE_ISO8601, strtotime($page->getCollectionDateLastModified()));
-        $v->addHeaderAsset((string) OpenGraph::create('article:modified_time', $lastModified));
+        /** @var \Concrete\Core\Localization\Service\Date $date */
+        $date = $app->make('helper/date');
+        $published = $date->toDateTime($page->getCollectionDatePublic());
+        if ($published) {
+            $v->addHeaderAsset((string) OpenGraph::create('article:published_time', $published->format(\DateTime::ATOM)));
+        }
+        $lastModified = $date->toDateTime($page->getCollectionDateLastModified());
+        if ($lastModified) {
+            $v->addHeaderAsset((string) OpenGraph::create('article:modified_time', $lastModified->format(\DateTime::ATOM)));
+        }
     }
 }

@@ -1,9 +1,10 @@
 <?php
 namespace Concrete\Package\OpenGraphTagsLite\Controller\SinglePage\Dashboard\OpenGraphTagsLite;
 
+use Concrete\Core\Package\PackageService;
 use Concrete\Core\Page\Controller\DashboardPageController;
-use Package;
-use File;
+use Concrete\Core\Package\Package;
+use Concrete\Core\File\File;
 
 class Settings extends DashboardPageController
 {
@@ -15,7 +16,9 @@ class Settings extends DashboardPageController
 
     public function view()
     {
-        $pkg = Package::getByHandle('open_graph_tags_lite');
+        /** @var PackageService $packageService */
+        $packageService = $this->app->make(PackageService::class);
+        $pkg = $packageService->getByHandle('open_graph_tags_lite');
         $fb_admin = $pkg->getConfig()->get('concrete.ogp.fb_admin_id');
         $fb_app_id = $pkg->getConfig()->get('concrete.ogp.fb_app_id');
         $thumbnailID = $pkg->getConfig()->get('concrete.ogp.og_thumbnail_id');
@@ -26,9 +29,6 @@ class Settings extends DashboardPageController
         $imageObject = false;
         if (!empty($thumbnailID)) {
             $imageObject = File::getByID($thumbnailID);
-            if (is_object($imageObject) && $imageObject->isError()) {
-                unset($imageObject);
-            }
         }
         $this->set('imageObject', $imageObject);
         $this->set('twitter_site', $twitter_site);

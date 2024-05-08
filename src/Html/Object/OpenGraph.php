@@ -30,7 +30,7 @@ class OpenGraph extends Tag
      * @param string $property
      * @param string $content
      */
-    public function __construct($property, $content)
+    public function __construct(string $property, string $content)
     {
         // HtmlObject does not escape attribute values.
         $this->setAttributes([
@@ -42,7 +42,7 @@ class OpenGraph extends Tag
     /**
      * Static alias for constructor.
      */
-    public static function create($property, $content)
+    public static function create(string $property, string $content): OpenGraph
     {
         return new static($property, $content);
     }

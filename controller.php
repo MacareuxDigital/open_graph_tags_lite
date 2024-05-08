@@ -1,18 +1,21 @@
 <?php
 namespace Concrete\Package\OpenGraphTagsLite;
 
-use SinglePage;
-use Page;
-use CollectionAttributeKey;
+use Concrete\Core\Events\EventDispatcher;
+use Concrete\Core\Package\Package;
+use Concrete\Core\Page\Single as SinglePage;
+use Concrete\Core\Attribute\Key\CollectionKey as CollectionAttributeKey;
 use Concrete\Core\Attribute\Type as AttributeType;
-use Events;
 use Concrete\Package\OpenGraphTagsLite\Src\Html\OpenGraphTags;
 
-class Controller extends \Concrete\Core\Package\Package
+class Controller extends Package
 {
     protected $pkgHandle = 'open_graph_tags_lite';
-    protected $appVersionRequired = '5.7.4';
-    protected $pkgVersion = '2.1.6';
+    protected $appVersionRequired = '9.0.0';
+    protected $pkgVersion = '3.0.0';
+    protected $pkgAutoloaderRegistries = [
+        'src' => '\Concrete\Package\OpenGraphTagsLite\Src',
+    ];
 
     public function getPackageDescription()
     {
@@ -42,13 +45,21 @@ class Controller extends \Concrete\Core\Package\Package
         $cak = CollectionAttributeKey::getByHandle('og_image');
         if (!is_object($cak)) {
             $at = AttributeType::getByHandle('image_file');
-            CollectionAttributeKey::add($at, ['akHandle' => 'og_image', 'akName' => t('og:image')]);
+            $category = $this->app->make('Concrete\Core\Attribute\Category\CategoryService')
+                ->getByHandle('collection');
+            $category->getController()->add($at, ['akHandle' => 'og_image', 'akName' => t('og:image')], $pkg);
         }
+
+        return $pkg;
     }
 
     public function on_start()
     {
-        $ogp = \Core::make(OpenGraphTags::class);
-        Events::addListener('on_before_render', [$ogp, 'insertTags']);
+        $this->app->singleton(OpenGraphTags::class);
+        /** @var OpenGraphTags $ogp */
+        $ogp = $this->app->make(OpenGraphTags::class);
+        /** @var EventDispatcher $dispatcher */
+        $dispatcher = $this->app->make(EventDispatcher::class);
+        $dispatcher->addListener('on_before_render', [$ogp, 'insertTags']);
     }
 }

@@ -30,7 +30,7 @@ class TwitterCard extends Tag
      * @param string $name
      * @param string $content
      */
-    public function __construct($name, $content)
+    public function __construct(string $name, string $content)
     {
         // HtmlObject does not escape attribute values.
         $this->setAttributes([
@@ -42,7 +42,7 @@ class TwitterCard extends Tag
     /**
      * Static alias for constructor.
      */
-    public static function create($name, $content)
+    public static function create(string $name, string $content): TwitterCard
     {
         return new static($name, $content);
     }

@@ -1,4 +1,15 @@
-<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
+<?php
+/** @var \Concrete\Core\View\View $view */
+/** @var \Concrete\Core\Form\Service\Form $form */
+
+defined('C5_EXECUTE') or die("Access Denied.");
+
+$fb_admin = $fb_admin ?? null;
+$fb_app_id = $fb_app_id ?? null;
+$thumbnailID = $thumbnailID ?? null;
+$imageObject = $imageObject ?? null;
+$twitter_site = $twitter_site ?? null;
+?>
 
 <form method="post" id="site-form" action="<?php echo $this->action('save_settings'); ?>" enctype="multipart/form-data">
 
@@ -8,7 +19,7 @@
         <legend><?php echo t('Default Thumbnail'); ?></legend>
         <div class="form-group">
             <?php echo $form->label('og_thumbnail_id', 'og:image') ?>
-            <?php $al = Loader::helper('concrete/asset_library'); ?>
+            <?php $al = app('helper/concrete/asset_library'); ?>
             <?php echo $al->image('og-thumbnail-id', 'og_thumbnail_id', 'Select Default Thumbnail', $imageObject); ?>
             <span class="help-block">
                 <?php echo t('This image is used for og:image by default. See %sSharing Best Practices for Websites%s', '<a href="https://developers.facebook.com/docs/sharing/best-practices#sharing-best-practices-for-websites">', '</a>'); ?>
