@@ -12,7 +12,7 @@ class Controller extends Package
 {
     protected $pkgHandle = 'open_graph_tags_lite';
     protected $appVersionRequired = '9.0.0';
-    protected $pkgVersion = '3.0.0';
+    protected $pkgVersion = '3.0.1';
     protected $pkgAutoloaderRegistries = [
         'src' => '\Concrete\Package\OpenGraphTagsLite\Src',
     ];
@@ -55,11 +55,12 @@ class Controller extends Package
 
     public function on_start()
     {
-        $this->app->singleton(OpenGraphTags::class);
-        /** @var OpenGraphTags $ogp */
-        $ogp = $this->app->make(OpenGraphTags::class);
+        $app = $this->app;
+        $app->singleton(OpenGraphTags::class);
         /** @var EventDispatcher $dispatcher */
         $dispatcher = $this->app->make(EventDispatcher::class);
-        $dispatcher->addListener('on_before_render', [$ogp, 'insertTags']);
+        $dispatcher->addListener('on_before_render', function ($event) use ($app) {
+            $app->make(OpenGraphTags::class)->insertTags($event);
+        });
     }
 }

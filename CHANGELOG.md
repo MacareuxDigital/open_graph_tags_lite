@@ -1,5 +1,9 @@
 # Open Graph Tags Lite Changelog
 
+## 3.0.1
+
+- Make it enable to override OpenGraphTags instance
+
 ## 3.0.0
 
 - Drop support for concrete 8.x or below
