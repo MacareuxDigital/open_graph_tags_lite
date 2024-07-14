@@ -5,10 +5,10 @@ use Concrete\Core\Entity\File\File as FileEntity;
 use Concrete\Core\Entity\Site\Locale;
 use Concrete\Core\File\File;
 use Concrete\Core\Localization\Localization;
-use Concrete\Core\Package\PackageService;
 use Concrete\Core\Page\Page;
 use Concrete\Core\Site\Service;
 use Concrete\Core\Support\Facade\Application;
+use Concrete\Package\OpenGraphTagsLite\Src\Config\ConfigService;
 use Concrete\Package\OpenGraphTagsLite\Src\Html\Object\OpenGraph;
 use Concrete\Package\OpenGraphTagsLite\Src\Html\Object\TwitterCard;
 
@@ -68,13 +68,11 @@ class OpenGraphTags
 
         $app = Application::getFacadeApplication();
 
-        /** @var PackageService $packageService */
-        $packageService = $app->make(PackageService::class);
-        $pkg = $packageService->getByHandle('open_graph_tags_lite');
-        $fb_admin = $pkg->getConfig()->get('concrete.ogp.fb_admin_id');
-        $fb_app_id = $pkg->getConfig()->get('concrete.ogp.fb_app_id');
-        $thumbnailID = $pkg->getConfig()->get('concrete.ogp.og_thumbnail_id');
-        $twitter_site = $pkg->getConfig()->get('concrete.ogp.twitter_site');
+        $configService = $app->make(ConfigService::class, ['site' => $page->getSite()]);
+        $fb_admin = $configService->get('fb_admin_id');
+        $fb_app_id = $configService->get('fb_app_id');
+        $thumbnailID = $configService->get('og_thumbnail_id');
+        $twitter_site = $configService->get('twitter_site');
 
         $pageTitle = $this->getOverriddenPageTitle();
         if (!$pageTitle) {

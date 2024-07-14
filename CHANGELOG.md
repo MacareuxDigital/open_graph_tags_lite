@@ -1,5 +1,9 @@
 # Open Graph Tags Lite Changelog
 
+## 3.0.2
+
+- Support multisite
+
 ## 3.0.1
 
 - Make it enable to override OpenGraphTags instance

@@ -12,7 +12,7 @@ class Controller extends Package
 {
     protected $pkgHandle = 'open_graph_tags_lite';
     protected $appVersionRequired = '9.0.0';
-    protected $pkgVersion = '3.0.1';
+    protected $pkgVersion = '3.0.2';
     protected $pkgAutoloaderRegistries = [
         'src' => '\Concrete\Package\OpenGraphTagsLite\Src',
     ];

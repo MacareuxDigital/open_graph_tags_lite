@@ -1,12 +1,11 @@
 <?php
 namespace Concrete\Package\OpenGraphTagsLite\Controller\SinglePage\Dashboard\OpenGraphTagsLite;
 
-use Concrete\Core\Package\PackageService;
-use Concrete\Core\Page\Controller\DashboardPageController;
-use Concrete\Core\Package\Package;
 use Concrete\Core\File\File;
+use Concrete\Core\Page\Controller\DashboardSitePageController;
+use Concrete\Package\OpenGraphTagsLite\Src\Config\ConfigService;
 
-class Settings extends DashboardPageController
+class Settings extends DashboardSitePageController
 {
     public function updated()
     {
@@ -16,13 +15,12 @@ class Settings extends DashboardPageController
 
     public function view()
     {
-        /** @var PackageService $packageService */
-        $packageService = $this->app->make(PackageService::class);
-        $pkg = $packageService->getByHandle('open_graph_tags_lite');
-        $fb_admin = $pkg->getConfig()->get('concrete.ogp.fb_admin_id');
-        $fb_app_id = $pkg->getConfig()->get('concrete.ogp.fb_app_id');
-        $thumbnailID = $pkg->getConfig()->get('concrete.ogp.og_thumbnail_id');
-        $twitter_site = $pkg->getConfig()->get('concrete.ogp.twitter_site');
+        /** @var ConfigService $configService */
+        $configService = $this->app->make(ConfigService::class, ['site' => $this->site]);
+        $fb_admin = $configService->get('fb_admin_id');
+        $fb_app_id = $configService->get('fb_app_id');
+        $thumbnailID = $configService->get('og_thumbnail_id');
+        $twitter_site = $configService->get('twitter_site');
         $this->set('fb_admin', $fb_admin);
         $this->set('fb_app_id', $fb_app_id);
         $this->set('thumbnailID', $thumbnailID);
@@ -45,12 +43,15 @@ class Settings extends DashboardPageController
             $fb_app_id = $this->post('fb_app_id');
             $og_thumbnail_id = $this->post('og_thumbnail_id');
             $twitter_site = $this->post('twitter_site');
-            $pkg = Package::getByHandle('open_graph_tags_lite');
-            $pkg->getConfig()->save('concrete.ogp.fb_admin_id', $fb_admin);
-            $pkg->getConfig()->save('concrete.ogp.fb_app_id', $fb_app_id);
-            $pkg->getConfig()->save('concrete.ogp.og_thumbnail_id', $og_thumbnail_id);
-            $pkg->getConfig()->save('concrete.ogp.twitter_site', $twitter_site);
-            $this->redirect('/dashboard/open_graph_tags_lite/settings', 'updated');
+
+            /** @var ConfigService $configService */
+            $configService = $this->app->make(ConfigService::class, ['site' => $this->site]);
+            $configService->set('fb_admin_id', $fb_admin);
+            $configService->set('fb_app_id', $fb_app_id);
+            $configService->set('og_thumbnail_id', (int) $og_thumbnail_id);
+            $configService->set('twitter_site', $twitter_site);
+
+            return $this->buildRedirect('/dashboard/open_graph_tags_lite/settings/updated');
         }
     }
 }
