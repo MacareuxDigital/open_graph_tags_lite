@@ -1,5 +1,10 @@
 # Open Graph Tags Lite Changelog
 
+## 3.0.3
+
+- Output `article:published_time` and `article:modified_time` only when `og:type` is `article`
+- Remove non-standard `og:updated_time` from supported properties documentation
+
 ## 3.0.2
 
 - Support multisite
