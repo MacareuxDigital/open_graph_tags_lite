@@ -180,15 +180,17 @@ class OpenGraphTags
         }
         $v->addHeaderAsset((string) OpenGraph::create('og:locale', $locale));
 
-        /** @var \Concrete\Core\Localization\Service\Date $date */
-        $date = $app->make('helper/date');
-        $published = $date->toDateTime($page->getCollectionDatePublic());
-        if ($published) {
-            $v->addHeaderAsset((string) OpenGraph::create('article:published_time', $published->format(\DateTime::ATOM)));
-        }
-        $lastModified = $date->toDateTime($page->getCollectionDateLastModified());
-        if ($lastModified) {
-            $v->addHeaderAsset((string) OpenGraph::create('article:modified_time', $lastModified->format(\DateTime::ATOM)));
+        if ($pageOgType === 'article') {
+            /** @var \Concrete\Core\Localization\Service\Date $date */
+            $date = $app->make('helper/date');
+            $published = $date->toDateTime($page->getCollectionDatePublic());
+            if ($published) {
+                $v->addHeaderAsset((string) OpenGraph::create('article:published_time', $published->format(\DateTime::ATOM)));
+            }
+            $lastModified = $date->toDateTime($page->getCollectionDateLastModified());
+            if ($lastModified) {
+                $v->addHeaderAsset((string) OpenGraph::create('article:modified_time', $lastModified->format(\DateTime::ATOM)));
+            }
         }
     }
 }
